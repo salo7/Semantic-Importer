@@ -1,0 +1,8 @@
+extends layout
+
+block content
+  h1 Fetch publications for author
+  p Search for: #{search}
+  div
+    form(name="searchAuthor", action="/searchAuthor", method="post")
+      input(type="text", name="authorName", placeholder="Input author's name", value=search)

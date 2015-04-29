@@ -1,0 +1,29 @@
+body {
+  padding: 50px;
+  font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+}
+
+a {
+  color: #00B7FF;
+}
+
+input[type="checkbox"].extensiveSearch{
+	margin-left: 10px;
+}
+input[type="checkbox"].extensiveSearch + label{
+	margin-left: 5px;
+}
+
+div.resultsXml{
+margin: 10px 0;
+}
+.btn.btn-primary.btn-sm{
+	margin-left: 22px;
+}
+
+table.searchResults{
+	width:50%;
+}
+table.searchResults tr td:first-child{
+	width:75%;
+}

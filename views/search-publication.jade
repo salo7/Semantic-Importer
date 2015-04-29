@@ -1,0 +1,38 @@
+extends layout
+
+block content
+  h1 Publications list for <i>#{authorName}</i>
+  p #{engine} returned #{resultsNum} publication results.
+
+  form(name="import", action="/import", method="post")
+    table.table.table-striped.table-hover
+      thead
+        tr
+          td
+          td Authors
+          td Title
+          td Book title
+          td Pages
+          td
+      tbody
+        for publication in returnPublications
+          tr
+            td
+              input(type='checkbox')
+            td= publication.authors
+            td= publication.title
+            td= publication.booktitle
+            td= publication.pages
+            td
+              if engine === 'dblp'
+                a(href= 'http://dblp.uni-trier.de//rec/xml/' + publication.dblpkey , target="_blank") (open xml)
+              else if engine === 'pubmed'
+                a(href= 'http://eutils.ncbi.nlm.nih.gov/entrez/eutils/esummary.fcgi?db=pubmed&id=' + publication.pubmedID , target="_blank") (open xml)
+            td
+              if engine === 'dblp'
+                a(href= 'http://dblp.uni-trier.de/rec/' + publication.dblpkey , target="_blank") details
+              else if engine === 'pubmed'
+                a(href= 'http://www.ncbi.nlm.nih.gov/pubmed/?term=' + publication.pubmedID + '[uid]' , target="_blank") details
+    br
+    br
+    input(type="submit", value="Import selected")

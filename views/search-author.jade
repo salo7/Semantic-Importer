@@ -1,0 +1,33 @@
+extends layout
+
+block content
+  h1 Fetch publications for author
+  if authorName
+    p Search for: <i>#{search}</i> returned #{resultsNum} results
+  
+  div
+    form(name="searchAuthor", action="/searchAuthor", method="get")
+      input(type="text", name="authorName", placeholder="Input author's name", value=search)
+      input(type="checkbox" value="1" name="extensiveSearch" checked=isExtensiveSearch class="extensiveSearch") 
+      label Use extensive search
+      br
+      label.radio-inline 
+        input(type="radio" name="engine" value="dblp" checked=(engine))
+        |DBLP
+      label.radio-inline 
+        input(type="radio" name="engine" value="pubmed") 
+        |Pubmed
+      input(type="submit" value="go" class="btn btn-primary btn-sm") 
+  div.resultsXml
+    if authorName
+      a(href= 'http://dblp.uni-trier.de/search/author?xauthor=' + authorName, target="_blank") (open results xml)
+  table.table.table-striped.table-hover.searchResults
+    thead
+    tbody
+      for author in returnAuthors
+        tr
+          td= author.authorName
+          td
+            a(href= 'http://dblp.uni-trier.de/pers/hd/' + author.urlpt, target="_blank") details
+          td
+            a(href= '/searchPublications/?urlpt=' + author.urlpt) fetch
