@@ -17,6 +17,7 @@
 	"bootstrap": "latest",
 	"q": "latest",
 	"request": "latest",
-	"n3": "latest"
+	"n3": "latest",
+	"jquery": "latest"
   }
 }

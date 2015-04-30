@@ -9,6 +9,7 @@ block content
       thead
         tr
           td
+            input(type='checkbox', id='select-all', title='(de)select all')
           td Authors
           td Title
           td Book title
@@ -18,8 +19,11 @@ block content
         for publication in returnPublications
           tr
             td
-              input(type='checkbox')
-            td= publication.authors
+              input.select-row(type='checkbox')
+            if publication.authors && publication.authors.length > 0
+              td= publication.authors
+            if publication.editors && publication.editors.length > 0
+              td.editors(title='Research editors')= publication.editors
             td= publication.title
             td= publication.booktitle
             td= publication.pages

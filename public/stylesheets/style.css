@@ -27,3 +27,15 @@ table.searchResults{
 table.searchResults tr td:first-child{
 	width:75%;
 }
+tr.selected{
+background-color: #FCEFDE !important;
+}
+tr.selected:hover{
+background-color: #F9F3EB !important;
+}
+tbody tr{
+	cursor:pointer;
+}
+tbody td.editors{
+	color:#939393;
+}
