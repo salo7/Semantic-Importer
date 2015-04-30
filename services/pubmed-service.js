@@ -1,9 +1,10 @@
 var Q = require('q');
 var request = Q.denodeify(require('request'));
 var parseString = require('xml2js').parseString;
-var util = require('util');
+var winston = require('winston');
 
 exports.searchByAuthor = function(isExtensiveSearch, authorName, cb){
+	winston.log('debug','Into searchByAuthor pubmed-service');
 	if(!isExtensiveSearch){
 		authorName = authorName + '[Author]';
 	}
@@ -18,12 +19,13 @@ exports.searchByAuthor = function(isExtensiveSearch, authorName, cb){
 		if (resp.statusCode >= 300) {
 		  throw new Error('Server responded with status code ' + resp.statusCode)
 		} else {
-			console.log('Before parsePubmedAuthorSearchXml');
+			winston.log('debug', 'Before parsePubmedAuthorSearchXml');
 			var innerRsponse = parsePubmedAuthorSearchXml(resp.body);
 			innerRsponse.then(function (innerResp) {					
-				console.log('After innerRsponse');
-				innerResp = innerResp[0];
+				winston.log('debug', 'After innerRsponse');
+				innerResp = innerResp[0];						
 				var returnPublications = parsePubmedAuthorSearchByIDXml(innerResp.body);
+				winston.log('debug', typeof cb);
 				cb(returnPublications);
 			});
 		}
@@ -47,14 +49,16 @@ function parsePubmedAuthorSearchXml(response){
 	return response;
 }
 
-function parsePubmedAuthorSearchByIDXml(response){
+function parsePubmedAuthorSearchByIDXml(response){		
+	winston.log('debug', 'In parsePubmedAuthorSearchByIDXml');
 	var responseObject, respAuthor, publication, authorsList;
 	var publicationsXmlList = [];
 	var returnPublications = [];
 	
 	parseString(response, function (err, result) {
+		winston.log('debug', 'In parsePubmedAuthorSearchByIDXml -> parseString');
 		responseObject = result;
-	});	
+	});
 	
 	publicationsXmlList = responseObject.eSummaryResult.DocSum;
 	//global.LogToFile(publicationsXmlList[0]);
@@ -77,9 +81,10 @@ function parsePubmedAuthorSearchByIDXml(response){
 			url : "",
 			ee : ""
 		};
-		console.log(publication);
+		//winston.log('debug', publication);
 		returnPublications.push(publication);
-	}
-	
-	return returnPublications;
+		
+		winston.log('debug', 'Out parsePubmedAuthorSearchByIDXml');
+		return returnPublications;
+	}	
 }

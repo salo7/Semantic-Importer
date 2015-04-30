@@ -1,8 +1,7 @@
 var Q = require('q');
 var request = Q.denodeify(require('request'));
 var parseString = require('xml2js').parseString;
-var http = require('http');
-var util = require('util');
+var winston = require('winston');
 
 exports.searchAuthors = function(isExtensiveSearch, authorName, cb){
 	if(!isExtensiveSearch){
@@ -37,65 +36,65 @@ exports.searchAuthors = function(isExtensiveSearch, authorName, cb){
 };
 
 exports.searchPublications = function (dblpUserID, authorName, cb){
+	winston.log('debug','Into searchPublications dblp-service');
 	
 	var returnPublications = [];
 	
-	var options = {
-		hostname: "dblp.uni-trier.de",
-		path: '/pers/xk/' + dblpUserID
-	};
-
-    var gsaReq = http.get(options, function (response) {
-        var completeResponse = '';
+	var response = request({
+		uri: 'http://dblp.uni-trier.de/pers/xk/' + dblpUserID,
+		method: 'GET'
+	});	
+	
+	response.then(function (resp) {
 		var responseObject;
+		var returnPublications = [];
+        var completeResponse = '';
 		var respPub;
 		var authorName;
-		
-        response.on('data', function (chunk) {
-            completeResponse += chunk;
-        });
-        response.on('end', function() {
-			parseString(completeResponse, function (err, result) {
+		resp = resp[0];
+		if (resp.statusCode >= 300) {
+			throw new Error('Server responded with status code ' + resp.statusCode)
+		} else {		
+			parseString(resp.body, function (err, result) {
 				responseObject = result;
-				console.log(responseObject.dblpperson.dblpkey[0]);
+				winston.log('debug',responseObject.dblpperson.dblpkey[0]);
 				
 				authorName=responseObject.dblpperson['$'].name;
 				
 				var length = responseObject.dblpperson.dblpkey.length;
 				var lastDblpKey =  responseObject.dblpperson.dblpkey[length-1];
 				
-				console.log('Number of records');
-				console.log(responseObject.dblpperson.dblpkey.length);
-				console.log('for author');
-				console.log(authorName);
+				winston.log('debug','Number of records');
+				winston.log('debug',responseObject.dblpperson.dblpkey.length);
+				winston.log('debug','for author');
+				winston.log('debug',authorName);
 				
 				
 				for(var j=0; j < responseObject.dblpperson.dblpkey.length; j++){
 					if(j>0){
-						var dblpkey = responseObject.dblpperson.dblpkey[j];
+						var dblpkey = responseObject.dblpperson.dblpkey[j];						
 						
-						var optionsDetails = {
-							hostname: "dblp.uni-trier.de",
-							path: '/rec/xml/' + dblpkey
-						};
+						var response = request({
+							uri: 'http://dblp.uni-trier.de/rec/xml/' + dblpkey,
+							method: 'GET'
+						});	
+						
 						(function(dblpkey){
-							var gsaReqDetails = http.get(optionsDetails, function (responseDetails) {
-								var completeResponseDetails = '';
-								var responseObjectDetails;		
-								
-								responseDetails.on('data', function (chunkDetails) {
-									completeResponseDetails += chunkDetails;
-								});
-								responseDetails.on('end', function() {
-									
-									parseString(completeResponseDetails, function (err, resultDetails) {
+						
+							response.then(function (resp) {
+								var responseObjectDetails;	
+								resp = resp[0];
+								if (resp.statusCode >= 300) {
+									throw new Error('Server responded with status code ' + resp.statusCode)
+								} else {		
+									parseString(resp.body, function (err, resultDetails) {
 										responseObjectDetails = resultDetails;
 										respPub = {};
 										respPub.dblpkey = dblpkey;
 										
-										console.log('<Object.keys issue>');
-										console.log(responseObjectDetails);
-										console.log('</Object.keys issue>');
+										winston.log('debug','<Object.keys issue>');
+										winston.log('debug',responseObjectDetails);
+										winston.log('debug','</Object.keys issue>');
 										
 										var key = Object.keys( responseObjectDetails.dblp)[0];
 										var details = responseObjectDetails.dblp[key][0];
@@ -113,27 +112,23 @@ exports.searchPublications = function (dblpUserID, authorName, cb){
 										respPub.ee = details.ee && details.ee[0];
 										returnPublications.push(respPub);
 										
-										console.log('<index issue>');
-										console.log(lastDblpKey === dblpkey);
-										console.log('</index issue>');
+										winston.log('debug','<index issue>');
+										winston.log('debug',lastDblpKey === dblpkey);
+										winston.log('debug','</index issue>');
 										
 										if(respPub.authors){
-											global.LogToFile(util.format(details));
+											winston.log('debug', details);
 										}
 										if(lastDblpKey === dblpkey){
 											cb(returnPublications);				
 										}									
 									});
-								});
-							}).on('error', function (e) {
-								console.log('problem with request: ' + e.message);
+								}
 							});
 						})(dblpkey);						
 					}
-				}			
+				}		
 			});
-        });
-	}).on('error', function (e) {
-		console.log('problem with request: ' + e.message);
-	});	
+		}
+	});
 };
