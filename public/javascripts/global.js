@@ -26,3 +26,10 @@ $('tbody input.select-row').click(function(e){
 		self.closest('tr').removeClass('selected');
 	}
 });
+
+/*
+$('#import-pubs).click(function(e){
+	var selectedPubs = [];
+	$('.select-row:checked').each(function(i,item){selectedPubs.push(item.value)});
+});
+*/

@@ -5,6 +5,7 @@ block content
   p #{engine} returned #{resultsNum} publication results.
 
   form(name="import", action="/import", method="post")
+    input.btn-primary(type="submit", id='import-pubs', value="Import selected")
     table.table.table-striped.table-hover
       thead
         tr
@@ -19,7 +20,7 @@ block content
         for publication in returnPublications
           tr
             td
-              input.select-row(type='checkbox')
+              input.select-row(type='checkbox', name='pubmedID', value=publication.pubmedID)
             if publication.authors && publication.authors.length > 0
               td= publication.authors
             if publication.editors && publication.editors.length > 0
@@ -39,4 +40,4 @@ block content
                 a(href= 'http://www.ncbi.nlm.nih.gov/pubmed/?term=' + publication.pubmedID + '[uid]' , target="_blank") details
     br
     br
-    input(type="submit", value="Import selected")
+    input.btn-primary(type="submit", id='import-pubs', value="Import selected")

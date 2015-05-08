@@ -2,8 +2,10 @@ var Q = require('q');
 var request = Q.denodeify(require('request'));
 var parseString = require('xml2js').parseString;
 var winston = require('winston');
+var P = require('../models/publication.js');
 
-exports.searchByAuthor = function(isExtensiveSearch, authorName, cb){
+
+exports.searchByAuthor = function(isExtensiveSearch, authorName, vivoID, cb){
 	winston.log('debug','Into searchByAuthor pubmed-service');
 	if(!isExtensiveSearch){
 		authorName = authorName + '[Author]';
@@ -24,7 +26,7 @@ exports.searchByAuthor = function(isExtensiveSearch, authorName, cb){
 			innerRsponse.then(function (innerResp) {					
 				winston.log('debug', 'After innerRsponse');
 				innerResp = innerResp[0];						
-				var returnPublications = parsePubmedAuthorSearchByIDXml(innerResp.body);
+				var returnPublications = parsePubmedAuthorSearchByIDXml(innerResp.body, vivoID);
 				winston.log('debug', typeof cb);
 				cb(returnPublications);
 			});
@@ -49,11 +51,11 @@ function parsePubmedAuthorSearchXml(response){
 	return response;
 }
 
-function parsePubmedAuthorSearchByIDXml(response){		
+function parsePubmedAuthorSearchByIDXml(response, vivoID){		
 	winston.log('debug', 'In parsePubmedAuthorSearchByIDXml');
 	var responseObject, respAuthor, publication, authorsList;
 	var publicationsXmlList = [];
-	var returnPublications = [];
+	var returnPublications = {};
 	
 	parseString(response, function (err, result) {
 		winston.log('debug', 'In parsePubmedAuthorSearchByIDXml -> parseString');
@@ -68,23 +70,23 @@ function parsePubmedAuthorSearchByIDXml(response){
 		authorsList = respAuthor.Item[3].Item.map(
 		  function(item) { return item._; }
 		);
-		publication = {
-			pubmedID: respAuthor.Id,
-			type : "",
-			key : "",
-			mdate : respAuthor.Item[0]._,
-			authors : authorsList,
-			title : respAuthor.Item[5]._,
-			pages : respAuthor.Item[8]._,
-			year : "",
-			booktitle : respAuthor.Item[22]._,
-			url : "",
-			ee : ""
-		};
-		//winston.log('debug', publication);
-		returnPublications.push(publication);
-		
-		winston.log('debug', 'Out parsePubmedAuthorSearchByIDXml');
-		return returnPublications;
+		publication = P.Publication(
+			vivoID,
+			respAuthor.Id, 
+			"", 
+			"", 
+			respAuthor.Item[0]._, 
+			authorsList, 
+			respAuthor.Item[5]._, 
+			respAuthor.Item[8]._, 
+			"", 
+			respAuthor.Item[22]._, 
+			"", 
+			"" 
+		);
+		returnPublications[respAuthor.Id] = publication;
 	}	
+		
+	winston.log('debug', 'Out parsePubmedAuthorSearchByIDXml');
+	return returnPublications;
 }
