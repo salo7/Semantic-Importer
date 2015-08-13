@@ -1,6 +1,7 @@
 extends layout
 
 block content
+  a(href= '/cacheUpdate/') Cache update
   h1 Fetch publications for author
   if authorName
     p Search for: <i>#{search}</i> returned #{resultsNum} results

@@ -1,0 +1,170 @@
+{
+  "head": {
+    "vars": [ "publication" , "title" , "dateValue" , "issue" , "pageStart" , "pageEnd" , "volume" , "presentedAt" , "publicationVenue" , "doi" , "authors" , "editors" ]
+  } ,
+  "results": {
+    "bindings": [
+      {
+        "publication": { "type": "uri" , "value": "http://vivo.iai.uni-bonn.de/individual/n2376" } ,
+        "title": { "datatype": "http://www.w3.org/2001/XMLSchema#string" , "type": "typed-literal" , "value": "OntoWiki - An Authoring, Publication and Visualization Interface for the Data Web" } ,
+        "publicationVenue": { "type": "uri" , "value": "http://vivo.iai.uni-bonn.de/individual/n5393" }
+      } ,
+      {
+        "publication": { "type": "uri" , "value": "http://vivo.iai.uni-bonn.de/individual/n3185" } ,
+        "title": { "datatype": "http://www.w3.org/2001/XMLSchema#string" , "type": "typed-literal" , "value": "Rethinking SSL Development in an Appified World,Proceedings of the 20th ACM Conference on Computer and Communications Security" } ,
+        "dateValue": { "datatype": "http://www.w3.org/2001/XMLSchema#dateTime" , "type": "typed-literal" , "value": "2013-01-01T00:00:00" } ,
+        "presentedAt": { "type": "uri" , "value": "http://vivo.iai.uni-bonn.de/individual/n1574" } ,
+        "authors": { "type": "literal" , "value": "http://vivo.iai.uni-bonn.de/individual/n6992" }
+      } ,
+      {
+        "publication": { "type": "uri" , "value": "http://vivo.iai.uni-bonn.de/individual/n4533" } ,
+        "title": { "datatype": "http://www.w3.org/2001/XMLSchema#string" , "type": "typed-literal" , "value": "Hey, NSA: Stay Away from my Market! Future Proofing App Markets against Powerful Attackers" } ,
+        "dateValue": { "datatype": "http://www.w3.org/2001/XMLSchema#dateTime" , "type": "typed-literal" , "value": "2014-01-01T00:00:00" } ,
+        "presentedAt": { "type": "uri" , "value": "http://vivo.iai.uni-bonn.de/individual/n1384" } ,
+        "authors": { "type": "literal" , "value": "http://vivo.iai.uni-bonn.de/individual/n6992" }
+      } ,
+      {
+        "publication": { "type": "uri" , "value": "http://vivo.iai.uni-bonn.de/individual/n898" } ,
+        "title": { "datatype": "http://www.w3.org/2001/XMLSchema#string" , "type": "typed-literal" , "value": "Why Eve and Mallory Love Android: An Analysis of Android SSL (In)Security" } ,
+        "dateValue": { "datatype": "http://www.w3.org/2001/XMLSchema#dateTime" , "type": "typed-literal" , "value": "2012-01-01T00:00:00" } ,
+        "presentedAt": { "type": "uri" , "value": "http://vivo.iai.uni-bonn.de/individual/n6850" } ,
+        "authors": { "type": "literal" , "value": "http://vivo.iai.uni-bonn.de/individual/n6992" }
+      } ,
+      {
+        "publication": { "type": "uri" , "value": "http://vivo.iai.uni-bonn.de/individual/n7921" } ,
+        "title": { "datatype": "http://www.w3.org/2001/XMLSchema#string" , "type": "typed-literal" , "value": "On the Ecological Validity of a Password Study" } ,
+        "dateValue": { "datatype": "http://www.w3.org/2001/XMLSchema#dateTime" , "type": "typed-literal" , "value": "2013-01-01T00:00:00" } ,
+        "presentedAt": { "type": "uri" , "value": "http://vivo.iai.uni-bonn.de/individual/n2060" } ,
+        "authors": { "type": "literal" , "value": "http://vivo.iai.uni-bonn.de/individual/n6992" }
+      } ,
+      {
+        "publication": { "type": "uri" , "value": "http://vivo.iai.uni-bonn.de/individual/n2446" } ,
+        "title": { "datatype": "http://www.w3.org/2001/XMLSchema#string" , "type": "typed-literal" , "value": "Now You See Me, Now You Don't - Protecting Smartphone Authentication from Shoulder Surfers" } ,
+        "dateValue": { "datatype": "http://www.w3.org/2001/XMLSchema#dateTime" , "type": "typed-literal" , "value": "2014-01-01T00:00:00" } ,
+        "presentedAt": { "type": "uri" , "value": "http://vivo.iai.uni-bonn.de/individual/n2143" } ,
+        "authors": { "type": "literal" , "value": "http://vivo.iai.uni-bonn.de/individual/n6992" }
+      } ,
+      {
+        "publication": { "type": "uri" , "value": "http://vivo.iai.uni-bonn.de/individual/n6602" } ,
+        "title": { "datatype": "http://www.w3.org/2001/XMLSchema#string" , "type": "typed-literal" , "value": "Bidirectionalization for Free!" } ,
+        "dateValue": { "datatype": "http://www.w3.org/2001/XMLSchema#dateTime" , "type": "typed-literal" , "value": "2009-01-01T00:00:00" } ,
+        "pageStart": { "datatype": "http://www.w3.org/2001/XMLSchema#string" , "type": "typed-literal" , "value": "165" } ,
+        "pageEnd": { "datatype": "http://www.w3.org/2001/XMLSchema#string" , "type": "typed-literal" , "value": "176" } ,
+        "presentedAt": { "type": "uri" , "value": "http://vivo.iai.uni-bonn.de/individual/n5528" } ,
+        "authors": { "type": "literal" , "value": "http://vivo.iai.uni-bonn.de/individual/n5097" }
+      } ,
+      {
+        "publication": { "type": "uri" , "value": "http://vivo.iai.uni-bonn.de/individual/n2271" } ,
+        "title": { "datatype": "http://www.w3.org/2001/XMLSchema#string" , "type": "typed-literal" , "value": "Medizintechnik in der ärztlichen Aus-, Weiter- und Fortbildung" } ,
+        "dateValue": { "datatype": "http://www.w3.org/2001/XMLSchema#dateTime" , "type": "typed-literal" , "value": "2010-01-01T00:00:00" } ,
+        "issue": { "type": "literal" , "value": "8" } ,
+        "pageStart": { "type": "literal" , "value": "846" } ,
+        "pageEnd": { "type": "literal" , "value": "852" } ,
+        "volume": { "type": "literal" , "value": "53" } ,
+        "doi": { "type": "literal" , "value": "10.1007/s00103-010-1102-3&nbsp;" } ,
+        "authors": { "type": "literal" , "value": "http://vivo.iai.uni-bonn.de/individual/n5612" }
+      } ,
+      {
+        "publication": { "type": "uri" , "value": "http://vivo.iai.uni-bonn.de/individual/n4362" } ,
+        "title": { "datatype": "http://www.w3.org/2001/XMLSchema#string" , "type": "typed-literal" , "value": "Using Personal Examples to Improve Risk Communication for Security and Privacy Decisions" } ,
+        "dateValue": { "datatype": "http://www.w3.org/2001/XMLSchema#dateTime" , "type": "typed-literal" , "value": "2014-01-01T00:00:00" } ,
+        "presentedAt": { "type": "uri" , "value": "http://vivo.iai.uni-bonn.de/individual/n4912" } ,
+        "authors": { "type": "literal" , "value": "http://vivo.iai.uni-bonn.de/individual/n6992" }
+      } ,
+      {
+        "publication": { "type": "uri" , "value": "http://vivo.iai.uni-bonn.de/individual/n6557" } ,
+        "title": { "datatype": "http://www.w3.org/2001/XMLSchema#string" , "type": "typed-literal" , "value": "Using Circular Programs to Deforest in Accumulating Parameters " } ,
+        "dateValue": { "datatype": "http://www.w3.org/2001/XMLSchema#dateTime" , "type": "typed-literal" , "value": "2004-01-01T00:00:00" } ,
+        "issue": { "datatype": "http://www.w3.org/2001/XMLSchema#string" , "type": "typed-literal" , "value": "1-2" } ,
+        "pageStart": { "datatype": "http://www.w3.org/2001/XMLSchema#string" , "type": "typed-literal" , "value": "129" } ,
+        "pageEnd": { "datatype": "http://www.w3.org/2001/XMLSchema#string" , "type": "typed-literal" , "value": "163" } ,
+        "volume": { "datatype": "http://www.w3.org/2001/XMLSchema#string" , "type": "typed-literal" , "value": "17" } ,
+        "publicationVenue": { "type": "uri" , "value": "http://vivo.iai.uni-bonn.de/individual/n1769" } ,
+        "authors": { "type": "literal" , "value": "http://vivo.iai.uni-bonn.de/individual/n6343,http://vivo.iai.uni-bonn.de/individual/n5097" }
+      } ,
+      {
+        "publication": { "type": "uri" , "value": "http://vivo.iai.uni-bonn.de/individual/n2400" } ,
+        "title": { "datatype": "http://www.w3.org/2001/XMLSchema#string" , "type": "typed-literal" , "value": "LinkedGeoData: A Core for a Web of Spatial Open Data" } ,
+        "dateValue": { "datatype": "http://www.w3.org/2001/XMLSchema#dateTime" , "type": "typed-literal" , "value": "2012-01-01T00:00:00" } ,
+        "issue": { "datatype": "http://www.w3.org/2001/XMLSchema#string" , "type": "typed-literal" , "value": "4" } ,
+        "pageStart": { "datatype": "http://www.w3.org/2001/XMLSchema#string" , "type": "typed-literal" , "value": "333" } ,
+        "pageEnd": { "datatype": "http://www.w3.org/2001/XMLSchema#string" , "type": "typed-literal" , "value": "354" } ,
+        "volume": { "datatype": "http://www.w3.org/2001/XMLSchema#string" , "type": "typed-literal" , "value": "3" } ,
+        "publicationVenue": { "type": "uri" , "value": "http://vivo.iai.uni-bonn.de/individual/n3280" } ,
+        "authors": { "type": "literal" , "value": "http://vivo.iai.uni-bonn.de/individual/n6343" }
+      } ,
+      {
+        "publication": { "type": "uri" , "value": "http://vivo.iai.uni-bonn.de/individual/n1723" } ,
+        "title": { "type": "literal" , "value": "Bundesgesundheitsblatt - Gesundheitsforschung - Gesundheitsschutz" }
+      } ,
+      {
+        "publication": { "type": "uri" , "value": "http://vivo.iai.uni-bonn.de/individual/n8749" } ,
+        "title": { "datatype": "http://www.w3.org/2001/XMLSchema#string" , "type": "typed-literal" , "value": "Diplomarbeit \"Das zweidimensionale Ising-Modell: Eine exakte Darstellung der Korrelationsfunktionen\"" } ,
+        "dateValue": { "datatype": "http://www.w3.org/2001/XMLSchema#dateTime" , "type": "typed-literal" , "value": "1992-01-01T00:00:00" } ,
+        "authors": { "type": "literal" , "value": "http://vivo.iai.uni-bonn.de/individual/n5612" }
+      } ,
+      {
+        "publication": { "type": "uri" , "value": "http://vivo.iai.uni-bonn.de/vivo/individual/n547" } ,
+        "title": { "type": "literal" , "value": "New newnewnewnenwenw." } ,
+        "pageStart": { "type": "literal" , "value": "666" } ,
+        "pageEnd": { "type": "literal" , "value": "666" } ,
+        "volume": { "type": "literal" , "value": "69" }
+      } ,
+      {
+        "publication": { "type": "uri" , "value": "http://vivo.iai.uni-bonn.de/individual/n3680" } ,
+        "title": { "datatype": "http://www.w3.org/2001/XMLSchema#string" , "type": "typed-literal" , "value": "Dbpedia: A nucleus for a web of open data" } ,
+        "dateValue": { "datatype": "http://www.w3.org/2001/XMLSchema#dateTime" , "type": "typed-literal" , "value": "2007-01-01T00:00:00" } ,
+        "presentedAt": { "type": "uri" , "value": "http://vivo.iai.uni-bonn.de/individual/n5235" } ,
+        "authors": { "type": "literal" , "value": "http://vivo.iai.uni-bonn.de/individual/n6343" }
+      } ,
+      {
+        "publication": { "type": "uri" , "value": "http://vivo.iai.uni-bonn.de/individual/n2554" } ,
+        "title": { "datatype": "http://www.w3.org/2001/XMLSchema#string" , "type": "typed-literal" , "value": "Linked Enterprise Data" } ,
+        "editors": { "type": "literal" , "value": "http://vivo.iai.uni-bonn.de/individual/n6343" }
+      } ,
+      {
+        "publication": { "type": "uri" , "value": "http://vivo.iai.uni-bonn.de/individual/n4032" } ,
+        "title": { "datatype": "http://www.w3.org/2001/XMLSchema#string" , "type": "typed-literal" , "value": "Linkedgeodata: Adding a spatial dimension to the web of data" } ,
+        "dateValue": { "datatype": "http://www.w3.org/2001/XMLSchema#dateTime" , "type": "typed-literal" , "value": "2009-01-01T00:00:00" } ,
+        "pageStart": { "datatype": "http://www.w3.org/2001/XMLSchema#string" , "type": "typed-literal" , "value": "731" } ,
+        "pageEnd": { "datatype": "http://www.w3.org/2001/XMLSchema#string" , "type": "typed-literal" , "value": "746" } ,
+        "presentedAt": { "type": "uri" , "value": "http://vivo.iai.uni-bonn.de/individual/n3967" } ,
+        "authors": { "type": "literal" , "value": "http://vivo.iai.uni-bonn.de/individual/n6343" }
+      } ,
+      {
+        "publication": { "type": "uri" , "value": "http://vivo.school.edu/individual/n5539" } ,
+        "title": { "datatype": "http://www.w3.org/2001/XMLSchema#string" , "type": "typed-literal" , "value": "test find author property" } ,
+        "dateValue": { "datatype": "http://www.w3.org/2001/XMLSchema#dateTime" , "type": "typed-literal" , "value": "2013-01-01T00:00:00" } ,
+        "publicationVenue": { "type": "uri" , "value": "http://vivo.school.edu/individual/n5411" } ,
+        "authors": { "type": "literal" , "value": "http://vivo.iai.uni-bonn.de/individual/n6343" }
+      } ,
+      {
+        "publication": { "type": "uri" , "value": "http://vivo.iai.uni-bonn.de/individual/n5896" } ,
+        "title": { "datatype": "http://www.w3.org/2001/XMLSchema#string" , "type": "typed-literal" , "value": "LIMES: a time-efficient approach for large-scale link discovery on the web of data" } ,
+        "dateValue": { "datatype": "http://www.w3.org/2001/XMLSchema#dateTime" , "type": "typed-literal" , "value": "2011-01-01T00:00:00" } ,
+        "presentedAt": { "type": "uri" , "value": "http://vivo.iai.uni-bonn.de/individual/n2055" } ,
+        "authors": { "type": "literal" , "value": "http://vivo.iai.uni-bonn.de/individual/n6343" }
+      } ,
+      {
+        "publication": { "type": "uri" , "value": "http://vivo.iai.uni-bonn.de/individual/n3070" } ,
+        "title": { "type": "literal" , "xml:lang": "de-DE" , "value": "Hybrid Tree Reconstruction From Inhomogeneous Point Clouds" } ,
+        "dateValue": { "datatype": "http://www.w3.org/2001/XMLSchema#dateTime" , "type": "typed-literal" , "value": "2014-01-01T00:00:00" } ,
+        "issue": { "datatype": "http://www.w3.org/2001/XMLSchema#string" , "type": "typed-literal" , "value": "6-8" } ,
+        "volume": { "datatype": "http://www.w3.org/2001/XMLSchema#string" , "type": "typed-literal" , "value": "30" } ,
+        "presentedAt": { "type": "uri" , "value": "http://vivo.iai.uni-bonn.de/individual/n3627" } ,
+        "publicationVenue": { "type": "uri" , "value": "http://vivo.iai.uni-bonn.de/individual/n1281" } ,
+        "doi": { "type": "literal" , "value": "10.1007/s00371-014-0977-7" } ,
+        "authors": { "type": "literal" , "value": "http://vivo.iai.uni-bonn.de/individual/n6116,http://vivo.iai.uni-bonn.de/individual/n1415" }
+      } ,
+      {
+        "publication": { "type": "uri" , "value": "http://vivo.iai.uni-bonn.de/individual/n913" } ,
+        "title": { "datatype": "http://www.w3.org/2001/XMLSchema#string" , "type": "typed-literal" , "value": "Free Theorems in the Presence of seq " } ,
+        "dateValue": { "datatype": "http://www.w3.org/2001/XMLSchema#dateTime" , "type": "typed-literal" , "value": "2004-01-01T00:00:00" } ,
+        "pageStart": { "datatype": "http://www.w3.org/2001/XMLSchema#string" , "type": "typed-literal" , "value": "99" } ,
+        "pageEnd": { "datatype": "http://www.w3.org/2001/XMLSchema#string" , "type": "typed-literal" , "value": "110" } ,
+        "presentedAt": { "type": "uri" , "value": "http://vivo.iai.uni-bonn.de/individual/n5528" } ,
+        "authors": { "type": "literal" , "value": "http://vivo.iai.uni-bonn.de/individual/n5097" }
+      }
+    ]
+  }
+}

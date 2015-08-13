@@ -1,0 +1,56 @@
+# Complex
+
+# Datetime  
+<http://vivo.iai.uni-bonn.de/vivo/individual/dateTime_{{uuid}}> a vivo:DateTimeValue;
+    vitro:mostSpecificType vivo:DateTimeValue;
+    vivo:dateTime {{dateXMLFormat}};
+    vivo:dateTimePrecision vivo:yearPrecision.
+#<http://vivo.iai.uni-bonn.de/vivo/individual/pubmed_{{pubmedID}}> vivo:dateTimeValue <http://vivo.iai.uni-bonn.de/vivo/individual/dateTime_{{uuid}}>.
+
+# Author (foreach)
+#- 1st create author
+<http://vivo.iai.uni-bonn.de/vivo/individual/person_{{uuid}}> a foaf:Person. #not enough info for mostSpecificType
+#- 2nd create authorship 
+<http://vivo.iai.uni-bonn.de/vivo/individual/authorship_{{uuid}}> a vivo:Authorship;
+    vitro:mostSpecificType vivo:Authorship;
+#- 3rd connect to pub n author
+#<http://vivo.iai.uni-bonn.de/vivo/individual/pubmed_{{pubmedID}}> vivo:relatedBy <http://vivo.iai.uni-bonn.de/vivo/individual/authorship_{{uuid}}>.
+    vivo:relates <http://vivo.iai.uni-bonn.de/vivo/individual/person_{{uuid}}>.
+
+# Editor (foreach)
+#- 1st create editor
+<http://vivo.iai.uni-bonn.de/vivo/individual/person_{{uuid}}> a foaf:Person. #not enough info for mostSpecificType
+#- 2nd create editorship
+<http://vivo.iai.uni-bonn.de/vivo/individual/editorship_{{uuid}}> a vivo:Editorship;
+    vitro:mostSpecificType vivo:Editorship;
+#- 3rd connect to pub n editor
+    vivo:relates <http://vivo.iai.uni-bonn.de/vivo/individual/person_{{uuid}}>.
+#<http://vivo.iai.uni-bonn.de/vivo/individual/pubmed_{{pubmedID}}> vivo:relatedBy <http://vivo.iai.uni-bonn.de/vivo/individual/editorship_{{uuid}}>.
+
+# Journal   
+<http://vivo.iai.uni-bonn.de/vivo/individual/journal_{{uuid}}> a bibo:Journal;
+    vitro:mostSpecificType bibo:Journal. #change type according to input type
+#<http://vivo.iai.uni-bonn.de/vivo/individual/pubmed_{{pubmedID}}> vivo:hasPublicationVenue <http://vivo.iai.uni-bonn.de/vivo/individual/journal_{{uuid}}> # is vivo:publicationVenueFor inferred?
+
+# Event
+<http://vivo.iai.uni-bonn.de/vivo/individual/conference_{{uuid}}> a bibo:Conference;
+    vitro:mostSpecificType bibo:Conference. #change type according to input type, maybe event:Event
+#<http://vivo.iai.uni-bonn.de/vivo/individual/pubmed_{{pubmedID}}> bibo:presentedAt <http://vivo.iai.uni-bonn.de/vivo/individual/conference_{{uuid}}> # is bibo:presents inferred???
+
+
+# Publication Type
+<http://vivo.iai.uni-bonn.de/vivo/individual/pubmed_{{pubmedID}}> a bibo:Document .
+    vitro:mostSpecificType bibo:AcademicArticle ; #change type according to input type
+# Straight Forward
+    rdfs:label "DBpedia - A large-scale, multilingual knowledge base extracted from Wikipedia." ;
+    bibo:pageEnd "" ;
+    bibo:pageStart "{{pageStart}}" ;
+    bibo:volume "" ;
+    bibo:doi "" ;
+    bibo:issue "" ;
+#publication connection with entities
+    bibo:presentedAt <http://vivo.iai.uni-bonn.de/vivo/individual/conference_{{uuid}}> ; # is bibo:presents inferred???
+    vivo:hasPublicationVenue <http://vivo.iai.uni-bonn.de/vivo/individual/journal_{{uuid}}> ; # is vivo:publicationVenueFor inferred?
+    vivo:relatedBy <http://vivo.iai.uni-bonn.de/vivo/individual/editorship_{{uuid}}>;
+    vivo:relatedBy <http://vivo.iai.uni-bonn.de/vivo/individual/authorship_{{uuid}}>;
+    vivo:dateTimeValue <http://vivo.iai.uni-bonn.de/vivo/individual/dateTime_{{uuid}}>.

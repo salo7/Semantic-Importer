@@ -20,6 +20,7 @@
 	"n3": "latest",
 	"jquery": "latest",
 	"winston": "latest",
-	"express-session": "latest"
+	"express-session": "latest",
+  "node-uuid" : "latest"
   }
 }

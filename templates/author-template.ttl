@@ -1,0 +1,10 @@
+# Author (foreach)
+#- 1st create author
+<http://vivo.iai.uni-bonn.de/vivo/individual/person_{{uuid}}> a foaf:Person. #not enough info for mostSpecificType
+#- 2nd create authorship 
+<http://vivo.iai.uni-bonn.de/vivo/individual/authorship_{{uuid}}> a vivo:Authorship;
+    vitro:mostSpecificType vivo:Authorship;
+#- 3rd connect to pub n author
+    vivo:relates <http://vivo.iai.uni-bonn.de/vivo/individual/person_{{uuid}}>.
+    
+<http://vivo.iai.uni-bonn.de/vivo/individual/pubmed_{{pubmedID}}> vivo:relatedBy <http://vivo.iai.uni-bonn.de/vivo/individual/authorship_{{uuid}}>.

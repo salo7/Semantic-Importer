@@ -2,6 +2,7 @@ var Q = require('q');
 var request = Q.denodeify(require('request'));
 var parseString = require('xml2js').parseString;
 var winston = require('winston');
+var P = require('../models/publication.js');
 
 exports.searchAuthors = function(isExtensiveSearch, authorName, cb){
 	if(!isExtensiveSearch){
@@ -47,7 +48,7 @@ exports.searchPublications = function (dblpUserID, authorName, cb){
 	
 	response.then(function (resp) {
 		var responseObject;
-		var returnPublications = [];
+		var returnPublications = {};//[];
         var completeResponse = '';
 		var respPub;
 		var authorName;
@@ -62,7 +63,8 @@ exports.searchPublications = function (dblpUserID, authorName, cb){
 				authorName=responseObject.dblpperson['$'].name;
 				
 				var length = responseObject.dblpperson.dblpkey.length;
-				var lastDblpKey =  responseObject.dblpperson.dblpkey[length-1];
+				// var lastDblpKey =  responseObject.dblpperson.dblpkey[length-1];
+				var lastDblpKey =  responseObject.dblpperson.dblpkey[4];
 				
 				winston.log('debug','Number of records');
 				winston.log('debug',responseObject.dblpperson.dblpkey.length);
@@ -70,7 +72,8 @@ exports.searchPublications = function (dblpUserID, authorName, cb){
 				winston.log('debug',authorName);
 				
 				
-				for(var j=0; j < responseObject.dblpperson.dblpkey.length; j++){
+				// for(var j=0; j < responseObject.dblpperson.dblpkey.length; j++){
+				for(var j=0; j < 5; j++){
 					if(j>0){
 						var dblpkey = responseObject.dblpperson.dblpkey[j];						
 						
@@ -90,11 +93,7 @@ exports.searchPublications = function (dblpUserID, authorName, cb){
 									parseString(resp.body, function (err, resultDetails) {
 										responseObjectDetails = resultDetails;
 										respPub = {};
-										respPub.dblpkey = dblpkey;
-										
-										winston.log('debug','<Object.keys issue>');
-										winston.log('debug',responseObjectDetails);
-										winston.log('debug','</Object.keys issue>');
+										respPub.extSourceID = dblpkey;
 										
 										var key = Object.keys( responseObjectDetails.dblp)[0];
 										var details = responseObjectDetails.dblp[key][0];
@@ -110,12 +109,9 @@ exports.searchPublications = function (dblpUserID, authorName, cb){
 										respPub.booktitle = details.booktitle  &&  details.booktitle[0];
 										respPub.url = details.url && details.url[0];
 										respPub.ee = details.ee && details.ee[0];
-										returnPublications.push(respPub);
-										
-										winston.log('debug','<index issue>');
-										winston.log('debug',lastDblpKey === dblpkey);
-										winston.log('debug','</index issue>');
-										
+										// returnPublications.push(new P.Publication(respPub));
+										returnPublications[respPub.key] = new P.Publication(respPub);
+
 										if(respPub.authors){
 											winston.log('debug', details);
 										}

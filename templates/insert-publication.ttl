@@ -1,30 +1,14 @@
 PREFIX  vitro: <http://vitro.mannlib.cornell.edu/ns/vitro/0.7#>
 PREFIX  owl:  <http://www.w3.org/2002/07/owl#>
 PREFIX  rdf:  <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
-PREFIX  rdf:  <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
 PREFIX  vivoCore: <http://vivoweb.org/ontology/core#>
 PREFIX  bibo: <http://purl.org/ontology/bibo/>
 PREFIX  obo: <http://purl.obolibrary.org/obo/>
-PREFIX vivoIndividual: <http://vivo.iai.uni-bonn.de/vivo/individual/>
+PREFIX  vivoIndividual: <http://vivo.iai.uni-bonn.de/vivo/individual/>
+PREFIX  vivo: <http://vivoweb.org/ontology/core#>
 INSERT DATA {
   GRAPH <http://vitro.mannlib.cornell.edu/default/vitro-kb-2> {
-    vivoIndividual:n548 rdf:type owl:Thing .
-    vivoIndividual:n548 rdf:type bibo:Document .
-    vivoIndividual:n548 rdf:type obo:BFO_0000001 .
-    vivoIndividual:n548 rdf:type bibo:AcademicArticle .
-    vivoIndividual:n548 rdf:type obo:BFO_0000002 .
-    vivoIndividual:n548 rdf:type bibo:Article .
-    vivoIndividual:n548 rdf:type obo:IAO_0000030 .
-    vivoIndividual:n548 rdf:type obo:BFO_0000031 .
-    vivoIndividual:n548 <http://www.w3.org/2000/01/rdf-schema#label> "OOOooooohhohohohohhohhhhhoi." .
-    vivoIndividual:n548 bibo:pageEnd "666" .
-    vivoIndividual:n548 bibo:pageStart "666" .
-    vivoIndividual:n548 bibo:volume "69" .
-    vivoIndividual:n548 vitro:modTime "2015-04-29T14:14:54"^^<http://www.w3.org/2001/XMLSchema#dateTime> .
-    vivoIndividual:n548 vitro:mostSpecificType bibo:AcademicArticle .
-    vivoIndividual:n548 vivoCore:dateTimeValue vivoIndividual:n332 .
-    vivoIndividual:n548 vivoCore:relatedBy vivoIndividual:n8138 .
-    vivoIndividual:n548 vivoCore:relatedBy vivoIndividual:n5202 .
-    vivoIndividual:n548 vivoCore:relatedBy vivoIndividual:n7942 .
+<http://vivo.iai.uni-bonn.de/vivo/individual/n_pubmed_journals/semweb/LehmannIJJKMHMK15> vitro:mostSpecificType bibo:AcademicArticle .
+
   }
 }

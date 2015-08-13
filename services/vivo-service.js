@@ -4,6 +4,7 @@ var request = Q.denodeify(require('request'));
 var Publication = require('../models/publication.js');
 
 var publicationVivoRDFTemplate = '';
+var insertPubTmpl = '';
 
 fs.readFile('./templates/publicationVivoRDFTempate.ttl', function read(err, data) {
     if (err) {
@@ -12,10 +13,19 @@ fs.readFile('./templates/publicationVivoRDFTempate.ttl', function read(err, data
     publicationVivoRDFTemplate = data.toString();
 });
 
-var createVivoInsert = function(publications){
+
+fs.readFile('./templates/insert-publication.ttl', function read(err, data) {
+    if (err) {
+        throw err;
+    }
+    insertPubTmpl = data.toString();
+});
+
+var createVivoInsert = function(vivoID, publications){
 	var publicationItemsRDF = '';
 	for(var i in publications){
-		publicationItemsRDF += Publication.createPublicationRDF(publications[i]);
+		// publicationItemsRDF += Publication.createPublicationRDF(publications[i]);
+		publicationItemsRDF += publications[i].createPublicationRDF(vivoID);
 	}
 	
 	var publicationVivoRDF = publicationVivoRDFTemplate
@@ -47,8 +57,8 @@ var executeVivoUpdate = function(sparqlRDF, cb){
 	});
 };
 
-exports.insertPublicationsIntoVivo = function(publications, cb){
-	var rdf = createVivoInsert(publications);
+exports.insertPublicationsIntoVivo = function(vivoID, publications, cb){
+	var rdf = createVivoInsert(vivoID, publications);
 	console.log(rdf);
 	executeVivoUpdate(rdf, cb);
 };

@@ -4,9 +4,12 @@ var util = require('util');
 var dblpService = require('../services/dblp-service.js');
 var pubmedService = require('../services/pubmed-service.js');
 var vivoService = require('../services/vivo-service.js');
+var cacheUpdateService = require('../services/cache-update-service.js');
 var winston = require('winston');
 var bodyParser = require('body-parser');
 var router = express.Router();
+var P = require('../models/publication.js');
+
 
 var sessionHandler = session({
 	secret: 'hqo263HPD2Q983H',
@@ -25,15 +28,15 @@ router.get('/import', sessionHandler, function(req, res, next) {
 
 router.post('/import', sessionHandler, function(req, res, next) {
 	var selectedPubs = [];
-	if(typeof req.body.pubmedID === 'string'){
-		selectedPubs.push(req.session.publications[req.body.pubmedID]);	
+	if(typeof req.body.extSourceID === 'string'){
+		selectedPubs.push(req.session.publications[req.body.extSourceID]);	
 	}
 	else{
-		for(var i in req.body.pubmedID){		
-			selectedPubs.push(req.session.publications[req.body.pubmedID[i]]);
+		for(var i in req.body.extSourceID){		
+			selectedPubs.push(new P.Publication(req.session.publications[req.body.extSourceID[i]]));
 		}	
 	}
-	vivoService.insertPublicationsIntoVivo(selectedPubs, function(msg){
+	vivoService.insertPublicationsIntoVivo(req.query.vivoID, selectedPubs, function(msg){
 		res.render('import', { msg: msg});		
 	});
 });
@@ -99,6 +102,11 @@ router.get('/searchPublications', sessionHandler, function(req, res, next) {
 
 router.get('/test', sessionHandler, function(req, res, next){
 	vivoService.testVivoUpdate();
+});
+
+
+router.get('/cacheUpdate', sessionHandler, function(req, res, next) {
+	cacheUpdateService.UpdateCacheLists();
 });
 
 module.exports = router;

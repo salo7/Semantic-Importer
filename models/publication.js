@@ -1,63 +1,96 @@
-function createPublicationRDF(publication){
+var uuid = require('node-uuid');
+
+
+var createPublicationRDF = function(authorVivoID){
 	var publicationVivoRDF = '';
 	var authorsVivoRDF = ''; 
-	var vivoPublicationItemTemplate = 'vivoIndividual:{{vivoID}} rdf:type owl:Thing .\n'+ 
-	'vivoIndividual:{{vivoID}} rdf:type bibo:Document .\n'+ 
-	'vivoIndividual:{{vivoID}} rdf:type obo:BFO_0000001 .\n'+ 
-	'vivoIndividual:{{vivoID}} rdf:type bibo:AcademicArticle .\n'+ 
-	'vivoIndividual:{{vivoID}} rdf:type obo:BFO_0000002 .\n'+ 
-	'vivoIndividual:{{vivoID}} rdf:type bibo:Article .\n'+ 
-	'vivoIndividual:{{vivoID}} rdf:type obo:IAO_0000030 .\n'+ 
-	'vivoIndividual:{{vivoID}} rdf:type obo:BFO_0000031 .\n'+ 
-	'vivoIndividual:{{vivoID}} vitro:mostSpecificType bibo:AcademicArticle .\n'+
-	'vivoIndividual:{{vivoID}} <http://www.w3.org/2000/01/rdf-schema#label> "{{title}}" .\n'+ 
-	'vivoIndividual:{{vivoID}} bibo:pageEnd "{{pageEnd}}" .\n'+ 
-	'vivoIndividual:{{vivoID}} bibo:pageStart "{{pageStart}}" .\n'+ 
-	'vivoIndividual:{{vivoID}} bibo:volume "{{volume}}" .\n'+
-	'vivoIndividual:{{authorVivoID}} vivo:Authorship vivoIndividual:{{vivoID}} .\n' 
+	var vivoPublicationItemTemplate = '<http://vivo.iai.uni-bonn.de/vivo/individual/{{vivoID}}> rdf:type owl:Thing .\n'+ 
+	'<http://vivo.iai.uni-bonn.de/vivo/individual/{{vivoID}}> rdf:type bibo:Document .\n'+ 
+	'<http://vivo.iai.uni-bonn.de/vivo/individual/{{vivoID}}> rdf:type obo:BFO_0000001 .\n'+ 
+	'<http://vivo.iai.uni-bonn.de/vivo/individual/{{vivoID}}> rdf:type bibo:AcademicArticle .\n'+ 
+	'<http://vivo.iai.uni-bonn.de/vivo/individual/{{vivoID}}> rdf:type obo:BFO_0000002 .\n'+ 
+	'<http://vivo.iai.uni-bonn.de/vivo/individual/{{vivoID}}> rdf:type bibo:Article .\n'+ 
+	'<http://vivo.iai.uni-bonn.de/vivo/individual/{{vivoID}}> rdf:type obo:IAO_0000030 .\n'+ 
+	'<http://vivo.iai.uni-bonn.de/vivo/individual/{{vivoID}}> rdf:type obo:BFO_0000031 .\n'+ 
+	'<http://vivo.iai.uni-bonn.de/vivo/individual/{{vivoID}}> vitro:mostSpecificType bibo:AcademicArticle .\n'+
+	'<http://vivo.iai.uni-bonn.de/vivo/individual/{{vivoID}}> rdfs:label "{{title}}" .\n'+ 
+	'<http://vivo.iai.uni-bonn.de/vivo/individual/{{vivoID}}> bibo:pageEnd "{{pageEnd}}" .\n'+ 
+	'<http://vivo.iai.uni-bonn.de/vivo/individual/{{vivoID}}> bibo:pageStart "{{pageStart}}" .\n'+ 
+	'<http://vivo.iai.uni-bonn.de/vivo/individual/{{vivoID}}> bibo:volume "{{volume}}" .\n'+
+	'<http://vivo.iai.uni-bonn.de/vivo/individual/{{authorVivoID}}> vivo:Authorship <http://vivo.iai.uni-bonn.de/vivo/individual/{{vivoID}}> .\n' 
 	
-	var authorsTriple = 'vivoIndividual:{{vivoID}} vivoCore:relatedBy vivoIndividual:{{authorVivoID}} .\n';
+	var authorsTriple = '<http://vivo.iai.uni-bonn.de/vivo/individual/{{vivoID}}> vivoCore:relatedBy <http://vivo.iai.uni-bonn.de/vivo/individual/{{authorVivoID}}> .\n';
 	
-	var vivoID = 'n' + '_pubmed_' + publication.pubmedID;
+	var vivoID = 'pubmed_' + this.extSourceID; //wtf?
 	
-	//temp
-	var tempAuthorIDs = [publication.authorVivoID];
+	//temp, check why authorVivoID
+	// var tempAuthorIDs = [this.authorVivoID];
 	
-	for(var i in tempAuthorIDs){//publication.authors){
-		//find authorVivoID or create new
-		var authorVivoID = tempAuthorIDs[i];
-		authorsVivoRDF += authorsTriple;
-	}
-	publicationVivoRDF = vivoPublicationItemTemplate + authorsVivoRDF;
+	// for(var i in tempAuthorIDs){//this.authors){
+	// 	//find authorVivoID or create new
+	// 	var authorVivoID = tempAuthorIDs[i];
+	// 	authorsVivoRDF += authorsTriple;
+	// }
+	publicationVivoRDF = vivoPublicationItemTemplate + authorsTriple;
 	publicationVivoRDF = publicationVivoRDF
 		.replace(/{{vivoID}}/g, vivoID)
 		.replace(/{{authorVivoID}}/g, authorVivoID)
-		.replace(/{{title}}/g, publication.title)
-		.replace(/{{pageEnd}}/g, publication.pages)
-		.replace(/{{volume}}/g, publication.bookTitle)
+		.replace(/{{title}}/g, this.title)
+		.replace(/{{pageEnd}}/g, this.pageEnd)
+		.replace(/{{volume}}/g, this.bookTitle)
 		.replace(/{{relatedBy}}/g, authorsVivoRDF);
 	
 	return publicationVivoRDF;
 };
 
-function Publication(authorVivoID, pubmedID, type, key, mdate, authors, title, pages, year, booktitle, url, ee){
-	var publication = {};
-	publication.authorVivoID = authorVivoID;
-	publication.pubmedID = pubmedID;
-	publication.type = type;
-	publication.key = key;
-	publication.mdate = mdate;
-	publication.authors = authors;
-	publication.title = title;
-	publication.pages = pages;
-	publication.year = year;
-	publication.bookTitle = booktitle;
-	publication.url = url;
-	publication.ee = ee;
+var getREDISmsetArray = function(){
+	return [	
+		"type", this.type,
+		"key", this.key,
+		"modificationDate", this.modificationDate,
+		"title", this.title,
+		"pageStart", this.pageStart,
+		"pageEnd", this.pageEnd,
+		"publicationDate", this.publicationDate,
+		"bookTitle", this.bookTitle,
+		"url", this.url,
+		"ee", this.ee,
+		"doi", this.doi,
 
-	return publication;
+		"conference", this.conference,
+		"journal", this.journal,
+
+		"authors", this.authors,
+		"editors", this.editors
+	];		
 }
 
+function Publication(_publication){
+
+	this.key = _publication.key || ""; 
+	this.extSourceID = _publication.extSourceID || "";
+
+	this.type = _publication.type || "";
+	this.modificationDate = _publication.modificationDate || "";
+	this.title = _publication.title || "";
+	this.pageStart = _publication.pageStart || "";
+	this.pageEnd = _publication.pageEnd || "";
+	this.publicationDate = _publication.publicationDate || "";
+	this.bookTitle = _publication.booktitle || "";
+	this.url = _publication.url || "";
+	this.ee = _publication.ee || "";
+	this.doi = _publication.doi || "";
+	this.issue = _publication.issue || "";
+	this.volume = _publication.volume || "";
+
+	this.conference = _publication.conference || "";
+	this.journal = _publication.journal || "";
+
+	this.authors = _publication.authors || "";
+	this.editors = _publication.editors || "";
+}
+
+Publication.prototype.createPublicationRDF = createPublicationRDF;
+Publication.prototype.getREDISmsetArray = getREDISmsetArray;
 	
 exports.Publication = Publication;
-exports.createPublicationRDF = createPublicationRDF;

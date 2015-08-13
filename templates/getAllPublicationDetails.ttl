@@ -1,0 +1,73 @@
+PREFIX  dc:   <http://purl.org/dc/elements/1.1/>
+PREFIX  rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX  apf:  <http://jena.hpl.hp.com/ARQ/property#>
+PREFIX  foaf: <http://xmlns.com/foaf/0.1/>
+PREFIX  bibo: <http://purl.org/ontology/bibo/>
+PREFIX  xsd:  <http://www.w3.org/2001/XMLSchema#>
+PREFIX  owl:  <http://www.w3.org/2002/07/owl#>
+PREFIX  rdf:  <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX  vivo: <http://vivoweb.org/ontology/core#>
+PREFIX  vitro:<http://vitro.mannlib.cornell.edu/ns/vitro/0.7#>
+
+SELECT ?publication  ?title ?date ?issue ?pageStart ?pageEnd ?volume ?presentedAt ?publicationVenue ?doi (group_concat(?author;separator=",") as ?authors) (group_concat(?editor;separator=",") as ?editors)
+
+WHERE
+{ 
+	?publication rdfs:label ?title.
+	
+	OPTIONAL{
+		?publication vivo:dateTimeValue _:dateNode.
+		_:dateNode vivo:dateTime ?date.
+	}
+	OPTIONAL{
+		?publication vivo:relatedBy _:authorship.
+		_:authorship vitro:mostSpecificType vivo:Authorship.
+		_:authorship  vivo:relates ?author.
+		?author rdf:type foaf:Person.
+	}
+	OPTIONAL{
+		?publication vivo:relatedBy _:editorship.
+		_:editorship vitro:mostSpecificType vivo:Editorship.
+		_:editorship  vivo:relates ?editor.
+		?editor rdf:type foaf:Person.
+	}
+	
+	OPTIONAL{
+		?publication bibo:issue ?issue.
+	}
+	
+	OPTIONAL{
+		?publication bibo:pageStart ?pageStart.
+	}
+	
+	OPTIONAL{
+		?publication bibo:pageEnd ?pageEnd.
+	}
+	
+	OPTIONAL{
+		?publication bibo:volume ?volume.
+	}
+	
+	OPTIONAL{
+		?publication bibo:doi ?doi.
+	}
+	
+	OPTIONAL{
+		?publication bibo:presentedAt ?presentedAt.
+	}
+	
+	OPTIONAL{
+		?publication vivo:hasPublicationVenue ?publicationVenue.
+	}
+
+
+	{
+		SELECT  DISTINCT ?publication
+		WHERE
+		  { 
+			?publication rdf:type ?type .
+			?type (rdfs:subClassOf)* bibo:Document
+		  }
+	}
+}
+GROUP BY ?publication  ?title ?date ?issue ?pageStart ?pageEnd ?volume ?presentedAt ?publicationVenue ?doi
