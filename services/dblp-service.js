@@ -93,11 +93,11 @@ exports.searchPublications = function (dblpUserID, authorName, cb){
 									parseString(resp.body, function (err, resultDetails) {
 										responseObjectDetails = resultDetails;
 										respPub = {};
-										respPub.extSourceID = dblpkey;
 										
 										var key = Object.keys( responseObjectDetails.dblp)[0];
 										var details = responseObjectDetails.dblp[key][0];
 										
+										respPub.extSourceID = dblpkey;
 										respPub.type = key;
 										respPub.key = details['$'].key;
 										respPub.mdate = details['$'].mdate;

@@ -1,5 +1,7 @@
 var getXMLDateFormat = function(date){
-    return d.getFullYear() + '-' + d.getMonth() + '-' + d.getDate() + 'T' + d.getHours() + ':' + d.getMinutes()  + ':' + d.getSeconds();
+    if (!date)
+        return '';
+    return date.getFullYear() + '-' + date.getMonth() + '-' + date.getDate() + 'T' + date.getHours() + ':' + date.getMinutes()  + ':' + date.getSeconds();
 }
 
 exports.getXMLDateFormat = getXMLDateFormat;

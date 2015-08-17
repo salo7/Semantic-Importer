@@ -1,0 +1,4 @@
+<http://vivo.iai.uni-bonn.de/vivo/individual/journal-{{journalUUID}}> a bibo:Journal;
+    vitro:mostSpecificType bibo:Journal;
+    rdfs:label "{{journalName}}".
+{{publicationVivoUri}} vivo:hasPublicationVenue <http://vivo.iai.uni-bonn.de/vivo/individual/journal-{{journalUUID}}>.

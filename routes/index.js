@@ -27,16 +27,17 @@ router.get('/import', sessionHandler, function(req, res, next) {
 });
 
 router.post('/import', sessionHandler, function(req, res, next) {
+	var engine = req.query.engine;
 	var selectedPubs = [];
 	if(typeof req.body.extSourceID === 'string'){
-		selectedPubs.push(req.session.publications[req.body.extSourceID]);	
+		selectedPubs.push(new P.Publication(req.session.publications[req.body.extSourceID]));	
 	}
 	else{
 		for(var i in req.body.extSourceID){		
 			selectedPubs.push(new P.Publication(req.session.publications[req.body.extSourceID[i]]));
 		}	
 	}
-	vivoService.insertPublicationsIntoVivo(req.query.vivoID, selectedPubs, function(msg){
+	vivoService.insertPublicationsIntoVivo(req.query.vivoID, selectedPubs, engine, function(msg){
 		res.render('import', { msg: msg});		
 	});
 });
@@ -107,6 +108,13 @@ router.get('/test', sessionHandler, function(req, res, next){
 
 router.get('/cacheUpdate', sessionHandler, function(req, res, next) {
 	cacheUpdateService.UpdateCacheLists();
+});
+
+
+router.get('/createDB', sessionHandler, function(req, res, next) {
+	cacheUpdateService.CreateDB(function(){
+		res.redirect('/');
+	});
 });
 
 module.exports = router;

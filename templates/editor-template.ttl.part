@@ -1,0 +1,6 @@
+<http://vivo.iai.uni-bonn.de/vivo/individual/person-{{personUUID}}> a foaf:Person; 
+    rdfs:label "{{editorName}}" .
+<http://vivo.iai.uni-bonn.de/vivo/individual/editorship-{{editorshipUUID}}> a vivo:Editorship;
+    vitro:mostSpecificType vivo:Editorship;
+    vivo:relates <http://vivo.iai.uni-bonn.de/vivo/individual/person-{{personUUID}}>.
+{{publicationVivoUri}} vivo:relatedBy <http://vivo.iai.uni-bonn.de/vivo/individual/editorship-{{editorshipUUID}}>.

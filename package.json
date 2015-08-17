@@ -13,14 +13,15 @@
     "express": "~4.12.2",
     "jade": "~1.9.2",
     "serve-favicon": "~2.2.0",
-	"xml2js": "latest",
-	"bootstrap": "latest",
-	"q": "latest",
-	"request": "latest",
-	"n3": "latest",
-	"jquery": "latest",
-	"winston": "latest",
-	"express-session": "latest",
-  "node-uuid" : "latest"
+  	"xml2js": "latest",
+  	"bootstrap": "latest",
+  	"q": "latest",
+  	"request": "latest",
+  	"n3": "latest",
+  	"jquery": "latest",
+  	"winston": "latest",
+  	"express-session": "latest",
+    "node-uuid" : "latest",
+    "sqlite3 " : "latest"
   }
 }

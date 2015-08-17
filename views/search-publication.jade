@@ -4,7 +4,7 @@ block content
   h1 Publications list for <i>#{authorName}</i>
   p #{engine} returned #{resultsNum} publication results.
 
-  form(name="import", action="/import", method="post")
+  form(name="import", action="/import/?engine=" + engine, method="post")
     input.btn-primary(type="submit", id='import-pubs', value="Import selected")
     table.table.table-striped.table-hover
       thead

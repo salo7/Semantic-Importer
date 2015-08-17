@@ -1,0 +1,5 @@
+<http://vivo.iai.uni-bonn.de/vivo/individual/dateTime-{{dateTimeUUID}}> a vivo:DateTimeValue;
+    vitro:mostSpecificType vivo:DateTimeValue;
+    vivo:dateTime "{{dateXMLFormat}}";
+    vivo:dateTimePrecision vivo:yearPrecision.
+{{publicationVivoUri}} vivo:dateTimeValue <http://vivo.iai.uni-bonn.de/vivo/individual/dateTime-{{dateTimeUUID}}>.

@@ -1,0 +1,2 @@
+{{publicationVivoUri}} a bibo:Document ;
+    vitro:mostSpecificType bibo:AcademicArticle.

@@ -1,0 +1,4 @@
+<http://vivo.iai.uni-bonn.de/vivo/individual/conference-{{conferenceUUID}}> a bibo:Conference;
+    vitro:mostSpecificType bibo:Conference;
+    rdfs:label "{{conferenceName}}".
+{{publicationVivoUri}} bibo:presentedAt <http://vivo.iai.uni-bonn.de/vivo/individual/conference-{{conferenceUUID}}>.

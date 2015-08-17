@@ -1,3 +1,4 @@
+var uuid = require('node-uuid');
 var fs = require('fs');
 var Q = require('q');
 var request = Q.denodeify(require('request'));
@@ -21,11 +22,11 @@ fs.readFile('./templates/insert-publication.ttl', function read(err, data) {
     insertPubTmpl = data.toString();
 });
 
-var createVivoInsert = function(vivoID, publications){
+var createVivoInsert = function(vivoID, publications, extSource){
 	var publicationItemsRDF = '';
 	for(var i in publications){
 		// publicationItemsRDF += Publication.createPublicationRDF(publications[i]);
-		publicationItemsRDF += publications[i].createPublicationRDF(vivoID);
+		publicationItemsRDF += publications[i].createPublicationRDF(vivoID, extSource);
 	}
 	
 	var publicationVivoRDF = publicationVivoRDFTemplate
@@ -57,9 +58,17 @@ var executeVivoUpdate = function(sparqlRDF, cb){
 	});
 };
 
-exports.insertPublicationsIntoVivo = function(vivoID, publications, cb){
-	var rdf = createVivoInsert(vivoID, publications);
+exports.insertPublicationsIntoVivo = function(vivoID, publications, extSource, cb){
+	var rdf = createVivoInsert(vivoID, publications, extSource);
 	console.log(rdf);
+	//temp
+	fs.writeFile("./tmp/rdf.ttl", rdf, function(err) {
+	    if(err) {
+	        return console.log(err);
+	    }
+
+	    console.log("The file was saved!");
+	}); 
 	executeVivoUpdate(rdf, cb);
 };
 
