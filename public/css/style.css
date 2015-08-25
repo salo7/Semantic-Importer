@@ -39,3 +39,16 @@ tbody tr{
 tbody td.editors{
 	color:#939393;
 }
+
+tr.duplicate td{
+    background-color: #FAFAD2;
+}
+
+.modal-body {
+    margin-top: 15px;
+}
+
+.form-group.arrow {  
+    margin-top: 20px;
+    cursor: pointer;
+}

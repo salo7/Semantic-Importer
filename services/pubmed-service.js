@@ -7,7 +7,6 @@ var P = require('../models/publication.js');
 
 exports.searchByAuthor = function(isExtensiveSearch, authorName, vivoID, cb){
 	var returnPublications = [];
-	winston.log('debug','Into searchByAuthor pubmed-service');
 	if(!isExtensiveSearch){
 		authorName = authorName + '[Author]';
 	}
@@ -22,16 +21,13 @@ exports.searchByAuthor = function(isExtensiveSearch, authorName, vivoID, cb){
 		if (resp.statusCode >= 300) {
 		  throw new Error('Server responded with status code ' + resp.statusCode)
 		} else {
-			winston.log('debug', 'Before parsePubmedAuthorSearchXml');
 			var innerRsponse = parsePubmedAuthorSearchXml(resp.body);
 			if (!innerRsponse) {
 				cb(returnPublications);
 			};
 			innerRsponse.then(function (innerResp) {					
-				winston.log('debug', 'After innerRsponse');
 				innerResp = innerResp[0];						
 				returnPublications = parsePubmedAuthorSearchByIDXml(innerResp.body, vivoID);
-				winston.log('debug', typeof cb);
 				cb(returnPublications);
 			});
 		}
@@ -60,13 +56,11 @@ function parsePubmedAuthorSearchXml(response){
 }
 
 function parsePubmedAuthorSearchByIDXml(response, vivoID){		
-	winston.log('debug', 'In parsePubmedAuthorSearchByIDXml');
 	var responseObject, respItem, publication, authorsList;
 	var publicationsXmlList = [];
 	var returnPublications = {};
 	
 	parseString(response, function (err, result) {
-		winston.log('debug', 'In parsePubmedAuthorSearchByIDXml -> parseString');
 		responseObject = result;
 	});
 	
@@ -108,6 +102,5 @@ function parsePubmedAuthorSearchByIDXml(response, vivoID){
 		returnPublications[respItem.Id] = new P.Publication(publication);
 	}	
 		
-	winston.log('debug', 'Out parsePubmedAuthorSearchByIDXml');
 	return returnPublications;
 }

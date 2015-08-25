@@ -18,8 +18,8 @@ block content
           td
       tbody
         for publication in returnPublications
-          tr
-            td
+          tr(class=publication.possibleDuplPublication ? "duplicate" : "non-duplicate")
+            td.publication-id
               input.select-row(type='checkbox', name='extSourceID', value=publication.extSourceID)
             if publication.authors && publication.authors.length > 0
               td= publication.authors
@@ -33,11 +33,18 @@ block content
                 a(href= 'http://dblp.uni-trier.de//rec/xml/' + publication.extSourceID , target="_blank") (open xml)
               else if engine === 'pubmed'
                 a(href= 'http://eutils.ncbi.nlm.nih.gov/entrez/eutils/esummary.fcgi?db=pubmed&id=' + publication.extSourceID , target="_blank") (open xml)
+
             td
               if engine === 'dblp'
                 a(href= 'http://dblp.uni-trier.de/rec/' + publication.extSourceID , target="_blank") details
               else if engine === 'pubmed'
                 a(href= 'http://www.ncbi.nlm.nih.gov/pubmed/?term=' + publication.extSourceID + '[uid]' , target="_blank") details
     br
-    br
     input.btn-primary(type="submit", id='import-pubs', value="Import selected")
+
+
+  div(id='compare-duplicates-modal' class='modal fade')
+    div(class='modal-dialog modal-lg')
+      div(class='modal-content')
+
+//-<div class="modal fade" id="compare-duplicates-modal'" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true"></div>

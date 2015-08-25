@@ -2,9 +2,14 @@ doctype html
 html
   head
     title= title
-    link(rel='stylesheet', href='/stylesheets/bootstrap.min.css')
-    link(rel='stylesheet', href='/stylesheets/style.css')
-    script(src='/javascripts/jquery.min.js')
+    link(rel='stylesheet', href='/css/bootstrap.min.css')
+    link(rel='stylesheet', href='/css/style.css')
   body
+    a(href= '/cacheUpdate/') Cache update  
+    a(href= '/createDB/') Create database
+    a(href= '/test/') Test
     block content
-    script(src='/javascripts/global.js')
+
+    script(src='/js/jquery.min.js')
+    script(src='/js/bootstrap.min.js')
+    script(src='/js/global.js')

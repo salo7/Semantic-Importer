@@ -5,6 +5,7 @@ var dblpService = require('../services/dblp-service.js');
 var pubmedService = require('../services/pubmed-service.js');
 var vivoService = require('../services/vivo-service.js');
 var cacheUpdateService = require('../services/cache-update-service.js');
+var duplicateDetectionService = require('../services/duplicate-detection-service.js');
 var winston = require('winston');
 var bodyParser = require('body-parser');
 var router = express.Router();
@@ -90,19 +91,24 @@ router.get('/searchPublications', sessionHandler, function(req, res, next) {
 	var dblpUserID = req.query.urlpt;
 	var authorName = req.body.authorName;
 	
-	dblpService.searchPublications(dblpUserID, authorName, function(returnPublications){
-		req.session.publications = returnPublications;
-		res.render('search-publication', { 
-			authorName: authorName, 
-			returnPublications: returnPublications, 
-			resultsNum: returnPublications.length ,
-			engine: 'dblp'
-		});	
+	dblpService.searchPublications(dblpUserID, authorName, function(returnPublications){		
+		duplicateDetectionService.DetectDuplicates(returnPublications, function(returnPublications){
+			console.log('Received', returnPublications.length, 'publications');
+			req.session.publications = returnPublications;
+			res.render('search-publication', { 
+				authorName: authorName, 
+				returnPublications: returnPublications, 
+				resultsNum: returnPublications.length ,
+				engine: 'dblp'
+			});	
+		});
+
 	});	
 });
 
 router.get('/test', sessionHandler, function(req, res, next){
-	vivoService.testVivoUpdate();
+	// vivoService.testVivoUpdate();
+	duplicateDetectionService.DetectDuplicates();
 });
 
 
@@ -115,6 +121,21 @@ router.get('/createDB', sessionHandler, function(req, res, next) {
 	cacheUpdateService.CreateDB(function(){
 		res.redirect('/');
 	});
+});
+
+
+router.get('/publicationCompare', sessionHandler, function(req, res, next) {
+	var rootPublication;
+	var result = {};
+
+	var pubKey = req.query.pubKey;
+	for(var i in req.session.publications){
+		if (req.session.publications[i].key === pubKey) {
+			rootPublication = req.session.publications[i];
+		};
+	}
+	result.rootPublication = rootPublication;
+	res.render( 'compare-publications', result);	
 });
 
 module.exports = router;

@@ -37,8 +37,6 @@ exports.searchAuthors = function(isExtensiveSearch, authorName, cb){
 };
 
 exports.searchPublications = function (dblpUserID, authorName, cb){
-	winston.log('debug','Into searchPublications dblp-service');
-	
 	var returnPublications = [];
 	
 	var response = request({
@@ -57,20 +55,13 @@ exports.searchPublications = function (dblpUserID, authorName, cb){
 			throw new Error('Server responded with status code ' + resp.statusCode)
 		} else {		
 			parseString(resp.body, function (err, result) {
-				responseObject = result;
-				winston.log('debug',responseObject.dblpperson.dblpkey[0]);
-				
+				responseObject = result;				
 				authorName=responseObject.dblpperson['$'].name;
 				
 				var length = responseObject.dblpperson.dblpkey.length;
 				// var lastDblpKey =  responseObject.dblpperson.dblpkey[length-1];
 				var lastDblpKey =  responseObject.dblpperson.dblpkey[4];
-				
-				winston.log('debug','Number of records');
-				winston.log('debug',responseObject.dblpperson.dblpkey.length);
-				winston.log('debug','for author');
-				winston.log('debug',authorName);
-				
+								
 				
 				// for(var j=0; j < responseObject.dblpperson.dblpkey.length; j++){
 				for(var j=0; j < 5; j++){

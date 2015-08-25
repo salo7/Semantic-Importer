@@ -23,5 +23,6 @@
   	"express-session": "latest",
     "node-uuid" : "latest",
     "sqlite3 " : "latest"
+
   }
 }

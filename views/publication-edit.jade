@@ -1,0 +1,30 @@
+mixin editPublication(publication, position)  
+  form(name="edit-publication", action="/editPublication", method="post")
+    div.row
+      div.form-group.col-md-11.field-wrapper
+        label Title
+        input(type="text", class="form-control", name="title", placeholder="Publication title", value=publication && publication.title)
+      if position == 'left'
+        div.form-group.col-md-1.arrow.left
+          div.copy-to-left(title="Copy value to left")
+            span.glyphicon.glyphicon-arrow-left
+          div.copy-to-right(title="Copy value to right")
+            span.glyphicon.glyphicon-arrow-right
+    
+    div.row
+      div.form-group.col-md-11.field-wrapper
+        label Authors
+        select.form-control(name="authors")
+          if publication
+            each author, i in publication.authors
+              option(value=i) #{author}  
+      if position == 'left'
+        div.form-group.col-md-1.arrow.left
+          div.copy-to-left(title="Copy value to left")
+            span.glyphicon.glyphicon-arrow-left
+          div.copy-to-right(title="Copy value to right")
+            span.glyphicon.glyphicon-arrow-right
+    
+
+    input(type="submit" value="reset" class="btn btn-default btn-sm") 
+    input(type="submit" value="import this" class="btn btn-success btn-sm") 

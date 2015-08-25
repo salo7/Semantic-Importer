@@ -97,7 +97,7 @@ var compilePublicationRDF = function(authorVivoURI, extSource){
 		;
 	};
 
-    // 1st check if the publication exists.
+    // 1st check if the publication exists
 	publicationVivoUri = publicationVivoUriTempl
         .replace(/{{extSourceID}}/g, this.key)
         .replace(/{{extSource}}/g, extSource);
