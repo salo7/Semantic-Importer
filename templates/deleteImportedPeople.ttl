@@ -8,15 +8,15 @@ PREFIX  owl:  <http://www.w3.org/2002/07/owl#>
 PREFIX  rdf:  <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
 PREFIX  vivo: <http://vivoweb.org/ontology/core#>
 
-SELECT ?eventID ?name
+DELETE
 WHERE
 {
-?eventID rdfs:label ?name 
+?personID rdfs:label ?name 
 {
-SELECT  DISTINCT ?eventID
+SELECT  DISTINCT ?personID
 WHERE
-  { ?eventID rdf:type ?type .
-    ?type rdfs:subClassOf foaf:Person
+  { ?personID (rdf:type)* foaf:Person
+    . FILTER(regex(str(?personID), "vivo.iai.uni-bonn.de/vivo/individual/person", "i"))
   }
 }
 }

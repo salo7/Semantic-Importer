@@ -6,13 +6,9 @@ var journalTemplate, dateTimeTemplate, eventTemplate, publicationTypeTemplate, a
 var publicationVivoUriToken = '{{publicationVivoUri}}'; 
 var publicationVivoUriTempl = '<http://vivo.iai.uni-bonn.de/vivo/individual/{{extSource}}-{{extSourceID}}>';
 
-var titleTemplate = publicationVivoUriToken + ' rdfs:label "{{title}}".';
-var pageEndTemplate = publicationVivoUriToken + ' rdfs:label "{{pageEnd}}".';
-var pageStartTemplate = publicationVivoUriToken + ' rdfs:label "{{pageStart}}".';
-var volumeTemplate = publicationVivoUriToken + ' rdfs:label "{{volume}}".';
-var doiTemplate = publicationVivoUriToken + ' rdfs:label "{{doi}}".';
-var issueTemplate = publicationVivoUriToken + ' rdfs:label "{{issue}}".';
-
+var labelTemplate = publicationVivoUriToken + ' rdfs:label "{{label}}".';
+//TODO: change ontology uri  
+var extSourceIDTemplate = publicationVivoUriToken + ' <http://vivo.school.edu/individual/extSourceID> "{{extSourceID}}".';
 
 fs.readFile('./templates/publicationType-template.ttl.part', function read(err, data) {
     if (err) {
@@ -61,19 +57,20 @@ var compilePublicationRDF = function(authorVivoURI, extSource){
     var publicationVivoUri = '';
 
 	var publicationVivoRDF = publicationTypeTemplate + 
-        (this.title && titleTemplate.replace(/{{title}}/g, this.title)) + 
-        (this.pageStart && titleTemplate.replace(/{{pageStart}}/g, this.pageStart)) + 
-        (this.pageEnd && titleTemplate.replace(/{{pageEnd}}/g, this.pageEnd)) + 
-        (this.volume && titleTemplate.replace(/{{volume}}/g, this.volume)) + 
-        (this.doi && titleTemplate.replace(/{{doi}}/g, this.doi)) + 
-        (this.issue && titleTemplate.replace(/{{issue}}/g, this.issue)) + 
+        (this.title && labelTemplate.replace(/{{label}}/g, this.title)) + 
+        (this.pageStart && labelTemplate.replace(/{{label}}/g, this.pageStart)) + 
+        (this.pageEnd && labelTemplate.replace(/{{label}}/g, this.pageEnd)) + 
+        (this.volume && labelTemplate.replace(/{{label}}/g, this.volume)) + 
+        (this.doi && labelTemplate.replace(/{{label}}/g, this.doi)) + 
+        (this.issue && labelTemplate.replace(/{{label}}/g, this.issue)) + 
+        (this.extSourceID && extSourceIDTemplate.replace(/{{extSourceID}}/g, this.extSourceID)) + 
         (this.publicationDate && dateTimeTemplate
 			.replace(/{{dateTimeUUID}}/g, uuid.v4())
 			.replace(/{{dateXMLFormat}}/g, dateUtils.getXMLDateFormat(this.publicationDate)))  + //is it a Date object? 
-        (this.conference && titleTemplate
-			.replace(/{{conferenceName}}/g, this.conference)
+        (this.conference && eventTemplate
+			.replace(/{{label}}/g, this.conference)
 			.replace(/{{conferenceUUID}}/g, uuid.v4())) + 
-		(this.journal && titleTemplate
+		(this.journal && journalTemplate
 			.replace(/{{journalName}}/g, this.journal)
 			.replace(/{{journalUUID}}/g, uuid.v4()));
 
@@ -101,6 +98,8 @@ var compilePublicationRDF = function(authorVivoURI, extSource){
 	publicationVivoUri = publicationVivoUriTempl
         .replace(/{{extSourceID}}/g, this.key)
         .replace(/{{extSource}}/g, extSource);
+
+    this.key = publicationVivoUri.replace('<','').replace('>','');
 
 	return publicationVivoRDF.replace(/{{publicationVivoUri}}/g, publicationVivoUri);
 	
@@ -205,8 +204,8 @@ function Publication(_publication){
 	this.conference = _publication.conference || "";
 	this.journal = _publication.journal || "";
 
-	this.authors = _publication.authors || [];
-	this.editors = _publication.editors || [];
+	this.authors = _publication.authors || "";
+	this.editors = _publication.editors || "";
 }
 
 Publication.prototype.createPublicationRDF = compilePublicationRDF;

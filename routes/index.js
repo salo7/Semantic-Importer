@@ -6,6 +6,9 @@ var pubmedService = require('../services/pubmed-service.js');
 var vivoService = require('../services/vivo-service.js');
 var cacheUpdateService = require('../services/cache-update-service.js');
 var duplicateDetectionService = require('../services/duplicate-detection-service.js');
+var deleteImportedService = require('../services/delete-imported-service.js');
+var stringDistance = require('../utilities/string-distance.js');
+
 var winston = require('winston');
 var bodyParser = require('body-parser');
 var router = express.Router();
@@ -25,6 +28,10 @@ router.get('/', sessionHandler, function(req, res, next) {
 
 router.get('/import', sessionHandler, function(req, res, next) {
 	res.render('import', { });
+});
+
+router.get('/admin', sessionHandler, function(req, res, next) {
+	res.render('admin', { });
 });
 
 router.post('/import', sessionHandler, function(req, res, next) {
@@ -106,19 +113,24 @@ router.get('/searchPublications', sessionHandler, function(req, res, next) {
 	});	
 });
 
-router.get('/test', sessionHandler, function(req, res, next){
-	// vivoService.testVivoUpdate();
-	duplicateDetectionService.DetectDuplicates();
-});
-
 
 router.get('/cacheUpdate', sessionHandler, function(req, res, next) {
-	cacheUpdateService.UpdateCacheLists();
+	console.log('Cache update started...');
+	cacheUpdateService.UpdateCacheLists(function(){
+		console.log('Cache update finished...');
+		res.redirect('/');
+	});
 });
 
 
 router.get('/createDB', sessionHandler, function(req, res, next) {
 	cacheUpdateService.CreateDB(function(){
+		res.redirect('/');
+	});
+});
+
+router.get('/deleteImported', sessionHandler, function(req, res, next) {
+	deleteImportedService.DeleteImported(function(){
 		res.redirect('/');
 	});
 });
@@ -136,6 +148,16 @@ router.get('/publicationCompare', sessionHandler, function(req, res, next) {
 	}
 	result.rootPublication = rootPublication;
 	res.render( 'compare-publications', result);	
+});
+
+
+router.get('/test', sessionHandler, function(req, res, next){
+  console.time("levenshtein");
+	for (var i = 1000 - 1; i >= 0; i--) {
+		stringDistance.getLevenshteinDistance('Proceedings of the Workshop on Linked Data on the Web, LDOW 2015, co-located with the 24th International World Wide Web Conference (WWW 2015), Florence, Italy, May 19th, 2015.','WYSIWYM - Integrated visualization, exploration and authoring of semantically enriched un-structured content.');
+	};
+  console.timeEnd("levenshtein");
+	
 });
 
 module.exports = router;

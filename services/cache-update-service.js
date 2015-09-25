@@ -2,6 +2,8 @@ var fs = require('fs');
 var Q = require('q');
 var request = Q.denodeify(require('request'));
 var P = require('../models/publication.js');
+var PE = require('../models/person.js');
+var config = require('../config/config.js').config;
 
 var sqlite3 = require('sqlite3').verbose();
 var dbFile = './data/vivoCache.db';
@@ -59,10 +61,10 @@ fs.readFile('./templates/getAllPublicationDetails.json', function read(err, data
 
 
 var executeQuery = function(sparqlRDF, cb){
-    cb([{},publicationDetails]);
-/*	var data = {
-		email: 'vivo_root@school.edu',
-		password:'test123',
+    // cb([{},publicationDetails]);
+	var data = {
+        email: config.vivo.username,
+        password:config.vivo.password,
 		query: sparqlRDF
 	};
 
@@ -70,7 +72,7 @@ var executeQuery = function(sparqlRDF, cb){
         headers: {
           'Accept': 'application/sparql-results+json'
         },
-		uri: 'http://localhost:8070/vivo/api/sparqlQuery',
+		uri: config.vivo.sparqlQueryUrl,
 		method: 'POST',
 		form: data
 	});
@@ -81,17 +83,45 @@ var executeQuery = function(sparqlRDF, cb){
 		} else {	
 			cb(resp);
 		}
-	});*/
+	});
 };
-//todo: create property extSourceID in vivo and retrieve it
-var updatePublicationsList = function () {
+
+var insertPublications = function(publications, cb){
+    var publication;
+    var publicationsSize = publications.length;
     var db = new sqlite3.Database(dbFile);
-    var publicationsParsed = {}, tempPublication = {}, publication = {}, args = [], i = 0, queryValues = {};
+
+    for (var i = publications.length - 1; i >= 0; i--) {
+        publication = publications[i];
+        queryValues = publication.getInsertQueryValues();
+        db.run('INSERT OR REPLACE INTO Publications (' + queryValues.keys.join(',') + ') VALUES(' + Array(queryValues.values.length +1 ).join('?').split('').join(',') 
+            + ')', queryValues.values, function(error){
+            if(error){
+                console.log(error);
+                db.close();
+            }
+            //make sure that this was the last query executed
+            if (--publicationsSize === 0) {
+                db.close();
+                cb();                        
+            };
+        });     
+    };
+}
+
+
+var updatePublicationsList = function (cb) {
+    var db = new sqlite3.Database(dbFile);
+    var publicationsParsed = {}, tempPublication = {}, publications = [], args = [], i = 0, j = 0,queryValues = {}, authors=[];
+    var returned = false;
+    var publicationsSize;
+
     executeQuery(getAllPublicationDetailsQuery, function(resp){
         publicationsParsed = JSON.parse(resp[1]);
+        publicationsSize = publicationsParsed.results.bindings.length;
         for(i in publicationsParsed.results.bindings){
             tempPublication = publicationsParsed.results.bindings[i];
-            publication = new P.Publication({
+            publications.push (new P.Publication({
                 authorVivoID: tempPublication.publication && tempPublication.publication.value,
                 key: tempPublication.publication && tempPublication.publication.value,
                 authors: tempPublication.authors && tempPublication.authors.value,
@@ -104,96 +134,69 @@ var updatePublicationsList = function () {
                 doi: tempPublication.doi && tempPublication.doi.value,
                 issue: tempPublication.issue && tempPublication.issue.value,
                 volume: tempPublication.volume && tempPublication.volume.value,
+                extSourceID: tempPublication.extSourceID && tempPublication.extSourceID.value,
                 }
-            );
-            // args = ["Publications:<" + publication.key + ">"];
-            // Array.prototype.push.apply(args,publication.getREDISmsetArray());
-            // args.push(function (err, res) {
-            //     console.log(res || err);            
-            // });
-
-            db.serialize(function() {
-                queryValues = publication.getInsertQueryValues();
-                db.run('INSERT OR REPLACE INTO Publications (' + queryValues.keys.join(',') + ') VALUES(' + Array(queryValues.values.length +1 ).join('?').split('').join(',') 
-                    + ')', queryValues.values, function(error){
-                    if(error){
-                        console.log(error);
-                        db.close();
-                    }
-                }); 
-
-                // db.run("DELETE from Publications where key='?'", [publication.key], function(error){
-                //     if(error) {
-                //         console.log(error);
-                //     }
-                //     else{ 
-                //     }
-                // });
-
-                // var stmt = db.prepare("INSERT INTO lorem VALUES (?)");
-                // for (var i = 0; i < 10; i++) {
-                //   stmt.run("Ipsum " + i);
-                // }
-                // stmt.finalize();
-
-                // db.each("SELECT rowid AS id, info FROM lorem", function(err, row) {
-                //     console.log(row.id + ": " + row.info);
-                // });
-            });
-
-            // redisClient.hmset.apply(redisClient, args);
+            ));
         }
-        db.close();
+        insertPublications(publications, cb);
+
     });
 }
 
 var updatePeopleList = function () {
-    var publicationsParsed = {}, tempPublication = {}, publication = {}, args = [], i = 0;
+    var db = new sqlite3.Database(dbFile);
+    var peopleParsed = {}, tempPerson = {}, person = {}, args = [], i = 0;
 
-    executeQuery(getAllPublicationDetailsQuery, function(resp){
-        publicationsParsed = JSON.parse(resp[1]);
-        for(i in publicationsParsed.results.bindings){
-            tempPublication = publicationsParsed.results.bindings[i];
-            publication = new P.Publication({
-                key: tempPublication.publication && tempPublication.publication.value,
-                authors: tempPublication.authors && tempPublication.authors.value,
-                authors: tempPublication.authors && tempPublication.authors.value,
-                title: tempPublication.title && tempPublication.title.value,
-                journal: tempPublication.publicationVenue && tempPublication.publicationVenue.value,
-                conference: tempPublication.presentedAt && tempPublication.presentedAt.value,
-                publicationDate: tempPublication.date && tempPublication.date.value,
-                pageStart: tempPublication.pageStart && tempPublication.pageStart.value,
-                pageEnd: tempPublication.pageEnd && tempPublication.pageEnd.value,
-                doi: tempPublication.doi && tempPublication.doi.value,
-                issue: tempPublication.issue && tempPublication.issue.value,
-                volume: tempPublication.volume && tempPublication.volume.value,
-            });
+    executeQuery(getAllPeopleQuery, function(resp){
+        peopleParsed = JSON.parse(resp[1]);
+        for(i in peopleParsed.results.bindings){
+            tempPerson = peopleParsed.results.bindings[i];
 
-            args = ["Publications:<" + publication.key + ">"];
-            Array.prototype.push.apply(args,publication.getREDISmsetArray());
-            args.push(function (err, res) {
-                console.log(res || err);            
+            person = new PE.Person({
+                id: tempPerson.personID && tempPerson.personID.value,
+                name: tempPerson.name && tempPerson.name.value                
             });
-            redisClient.hmset.apply(redisClient, args);
+            
+            db.run('INSERT OR REPLACE INTO Persons (id, name) VALUES(?,?)', [person.id, person.name], function(error){
+                if(error){
+                    console.log(error);
+                    db.close();
+                }
+            }); 
         }
     });
 }
 
 var createDB = function (cb) {
+    var db = new sqlite3.Database(dbFile);
     var pub = new P.Publication({});
-    //if not exists
-    var createQuery = pub.getCreateQuery();
+    var person = new PE.Person({});
+    var pubCreateQuery = pub.getCreateQuery(); 
+
     db.serialize(function() {
-        db.run(createQuery, function(error){
+        db.run(person.createQuery, function(error){
             if(error)
                 console.log(error);
-            else 
-                cb();
         });
+        db.run(pubCreateQuery, function(error){
+            if(error)
+                console.log(error);
+        });
+        db.run( 'CREATE TABLE IF NOT EXISTS `DblpCache` ( `url` TEXT, `xml` BLOB, PRIMARY KEY(url));', function(error){
+            if(error)
+                console.log(error);
+            cb();
+        });
+
     });
+    db.close();
 }
 
-exports.UpdateCacheLists =  function () { 
-    updatePublicationsList();
+exports.UpdateCacheLists =  function (cb) { 
+    createDB(function(){        
+        updatePeopleList();
+        updatePublicationsList(cb);
+    });
 };
+exports.InsertPublications = insertPublications;
 exports.CreateDB = createDB;

@@ -46,6 +46,11 @@
 # Publication Type
 <http://vivo.iai.uni-bonn.de/vivo/individual/pubmed-{{pubmedID}}> a bibo:Document ;
     vitro:mostSpecificType bibo:AcademicArticle ; #change type according to input type
+    ni-bonn.de/vivo/individual/editorship-{{editorshipUUID}}>.
+
+# Publication Type
+<http://vivo.iai.uni-bonn.de/vivo/individual/pubmed-{{pubmedID}}> a bibo:Document ;
+    vitro:mostSpecificType bibo:AcademicArticle ; #change type according to input type
 
 # Straight Forward
     rdfs:label "{{title}}" ;

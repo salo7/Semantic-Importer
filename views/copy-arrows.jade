@@ -1,0 +1,9 @@
+mixin copyArrows(position)
+  if position == 'left'
+    div.form-group.col-md-1.arrow.left
+      div.copy-to-left(title="Copy value to left")
+        span.glyphicon.glyphicon-arrow-left
+      div.copy-to-right(title="Copy value to right")
+        span.glyphicon.glyphicon-arrow-right
+  else
+    div(style='height:49px;')

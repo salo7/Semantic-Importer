@@ -8,15 +8,12 @@ PREFIX  owl:  <http://www.w3.org/2002/07/owl#>
 PREFIX  rdf:  <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
 PREFIX  vivo: <http://vivoweb.org/ontology/core#>
 
-SELECT ?eventID ?name
-WHERE
-{
-?eventID rdfs:label ?name 
-{
-SELECT  DISTINCT ?eventID
-WHERE
-  { ?eventID rdf:type ?type .
-    ?type rdfs:subClassOf foaf:Person
+update=DELETE DATA{
+   GRAPH <http://vitro.mannlib.cornell.edu/default/vitro-kb-2> {
+  ?documentID ?p ?o .
   }
-}
+} WHERE {
+  ?documentID rdf:type bibo:Document. 
+  FILTER(regex(str(?documentID), "vivo.iai.uni-bonn.de/vivo/individual/dblp", "i")).
+  {?documentID ?p ?o .} UNION {?x ?y ?z}
 }

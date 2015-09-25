@@ -65,8 +65,7 @@ WHERE
 		SELECT  DISTINCT ?publication
 		WHERE
 		  { 
-			?publication rdf:type ?type .
-			?type (rdfs:subClassOf)* bibo:Document
+			?publication rdf:type bibo:Document
 		  }
 	}
 }

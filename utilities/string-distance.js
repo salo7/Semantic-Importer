@@ -28,6 +28,12 @@ exports.getLevenshteinDistance = function(a,b){
       }
     }
   }
+  var score = matrix[b.length][a.length];
+  
+  // console.log(a);
+  // console.log(b);
+  // console.log(score);
+  // console.log('-----------------------------------------------------');
 
-  return matrix[b.length][a.length];
+  return score;
 };

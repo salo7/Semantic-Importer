@@ -3,6 +3,8 @@ var fs = require('fs');
 var Q = require('q');
 var request = Q.denodeify(require('request'));
 var Publication = require('../models/publication.js');
+var cache = require('../services/cache-update-service.js');
+var config = require('../config/config.js').config;
 
 var publicationVivoRDFTemplate = '';
 var insertPubTmpl = '';
@@ -24,6 +26,7 @@ fs.readFile('./templates/insert-publication.ttl', function read(err, data) {
 
 var createVivoInsert = function(vivoID, publications, extSource){
 	var publicationItemsRDF = '';
+  console.time("rdfCreation");
 	for(var i in publications){
 		// publicationItemsRDF += Publication.createPublicationRDF(publications[i]);
 		publicationItemsRDF += publications[i].createPublicationRDF(vivoID, extSource);
@@ -32,24 +35,27 @@ var createVivoInsert = function(vivoID, publications, extSource){
 	var publicationVivoRDF = publicationVivoRDFTemplate
 		.replace(/{{publicationVivoRDF}}/g, publicationItemsRDF);
 	
+  console.timeEnd("rdfCreation");
 	return publicationVivoRDF;
 };
 
 var executeVivoUpdate = function(sparqlRDF, cb){
 
+  console.time("vivoImport");
 	var data = {
-		email: 'vivo_root@school.edu',
-		password:'test123',
+		email: config.vivo.username,
+		password:config.vivo.password,
 		update: sparqlRDF
 	};
 
 	var response = request({
-		uri: 'http://localhost:8070/vivo/api/sparqlUpdate',
+		uri: config.vivo.sparqlUpdateUrl,
 		method: 'POST',
 		form: data
 	});
 	
 	response.then(function (resp) {
+  	console.timeEnd("vivoImport");
 		if (resp.statusCode >= 300) {
 			throw new Error('Server responded with status code ' + resp.statusCode)
 		} else {	
@@ -69,18 +75,20 @@ exports.insertPublicationsIntoVivo = function(vivoID, publications, extSource, c
 
 	    console.log("The file was saved!");
 	}); 
-	executeVivoUpdate(rdf, cb);
+	executeVivoUpdate(rdf, function(){
+		cache.InsertPublications(publications, cb);
+	});
 };
 
 exports.testVivoUpdate = function(){
 	var data = {
-		email: 'vivo_root@school.edu',
-		password:'test123',
+		email: config.vivo.username,
+		password:config.vivo.password,
 		update: insertPubTmpl
 	};
 
 	var response = request({
-		uri: 'http://localhost:8070/vivo/api/sparqlUpdate',
+		uri: config.vivo.sparqlUpdateUrl,
 		method: 'POST',
 		form: data
 	});

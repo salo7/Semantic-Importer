@@ -16,7 +16,7 @@ WHERE
 SELECT  DISTINCT ?journalID
 WHERE
   { ?journalID rdf:type ?type .
-    ?type (rdfs:subClassOf)* bibo:Journal # or bibo:Collection
+    ?type (dfs:subClassOf bibo:Journal # or bibo:Collection
   }
 }
 }

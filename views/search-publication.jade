@@ -1,11 +1,26 @@
+include publication-row
+
 extends layout
 
 block content
-  h1 Publications list for <i>#{authorName}</i>
-  p #{engine} returned #{resultsNum} publication results.
+  //-h1 Publications list for <i>#{authorName}</i>
+  //-p #{engine} returned #{resultsNum} publication results.
+
+  div.legend
+    div.possible-duplicate(style='float:left;width:29px;height:30px')
+    div(style='float:left; height:30px;padding: 7px;') Possible duplicates
+
+    div.changed-duplicate(style='float:left;width:29px;height:30px')
+    div(style='float:left; height:30px;padding: 7px;') Changed duplicates
+
+    div.identical-duplicate(style='float:left;width:29px;height:30px')
+    div(style='float:left; height:30px;padding: 7px;') Identical duplicates
+
+    div.new(style='float:left;width:29px;height:30px')
+    div(style='float:left; height:30px;padding: 7px;') New publications
 
   form(name="import", action="/import/?engine=" + engine, method="post")
-    input.btn-primary(type="submit", id='import-pubs', value="Import selected")
+    input.btn-primary(type="submit", class='import-pubs', value="Import selected")
     table.table.table-striped.table-hover
       thead
         tr
@@ -13,34 +28,27 @@ block content
             input(type='checkbox', id='select-all', title='(de)select all')
           td Authors
           td Title
-          td Book title
-          td Pages
+          //-td Book title
+          //-td Pages
           td
       tbody
         for publication in returnPublications
-          tr(class=publication.possibleDuplPublication ? "duplicate" : "non-duplicate")
-            td.publication-id
-              input.select-row(type='checkbox', name='extSourceID', value=publication.extSourceID)
-            if publication.authors && publication.authors.length > 0
-              td= publication.authors
-            if publication.editors && publication.editors.length > 0
-              td.editors(title='Research editors')= publication.editors
-            td= publication.title
-            td= publication.booktitle
-            td= publication.pages
-            td
-              if engine === 'dblp'
-                a(href= 'http://dblp.uni-trier.de//rec/xml/' + publication.extSourceID , target="_blank") (open xml)
-              else if engine === 'pubmed'
-                a(href= 'http://eutils.ncbi.nlm.nih.gov/entrez/eutils/esummary.fcgi?db=pubmed&id=' + publication.extSourceID , target="_blank") (open xml)
+          if publication.possibleDuplicate
+            +publicationRow(publication, 'duplicate possible-duplicate', 'This publication seems to already exist in our system. Please click to disambiguate')
 
-            td
-              if engine === 'dblp'
-                a(href= 'http://dblp.uni-trier.de/rec/' + publication.extSourceID , target="_blank") details
-              else if engine === 'pubmed'
-                a(href= 'http://www.ncbi.nlm.nih.gov/pubmed/?term=' + publication.extSourceID + '[uid]' , target="_blank") details
+        for publication in returnPublications
+          if publication.changedDuplicate
+            +publicationRow(publication, 'duplicate changed-duplicate', 'This publication has been imported into our system but has been changed. Please click to disambiguate')
+            
+        for publication in returnPublications
+          if publication.new
+            +publicationRow(publication, 'new')
+            
+        for publication in returnPublications
+          if publication.identical
+            +publicationRow(publication, 'duplicate identical-duplicate', 'This publication has already been imported into our system and cannot be imported')
     br
-    input.btn-primary(type="submit", id='import-pubs', value="Import selected")
+    input.btn-primary(type="submit", class='import-pubs', value="Import selected")
 
 
   div(id='compare-duplicates-modal' class='modal fade')

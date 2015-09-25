@@ -15,8 +15,7 @@ WHERE
 {
 SELECT  DISTINCT ?personID
 WHERE
-  { ?personID rdf:type ?type .
-    ?type (rdfs:subClassOf)* foaf:Person
+  { ?personID rdf:type foaf:Person
   }
 }
 }
